@@ -9,11 +9,11 @@ library(lubridate)
 library(gnnlab)
 library(readxl)
 
+
 ###############################################################
 # make figure---------------
 oxygen_rate = read_csv("oxygen_rate.csv")
 light_all = read_csv("light.csv")
-
 oxy = oxygen_rate %>% mutate(month = month(Date),
                              year = year(Date)) %>% 
   mutate(H = hour(datetime) + minute(datetime)/60)
@@ -66,11 +66,11 @@ product_all = product_all %>%
 
 #########################################################################
 ylabel = expression("GEP"~(mg~O[2]~m^{-3}~day^{-1}))
-product_all  %>% filter(location == "arikawagaramo") %>% 
+product_all %>%filter(location == "arikawagaramo") %>% 
   # mutate(RP = -RP) %>% 
   # filter(RP>0) %>%
   ggplot()+
-  geom_boxplot(aes(x = month, y = -RP, group = month, fill = location),
+  geom_boxplot(aes(x = month, y = GEP, group = month, fill = location),
                outlier.colour = NA)+
   scale_x_continuous("", 
                      minor_breaks = 1:12,
@@ -85,7 +85,6 @@ product_all  %>% filter(location == "arikawagaramo") %>%
         legend.position = "none",
         strip.background = element_blank(),
         strip.placement = "outside") 
-
 
 ggsave("figure/GEP_4year_garamo.png",
        width = 200, height = 115, units = "mm", dpi = 600)
