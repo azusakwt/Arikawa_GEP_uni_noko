@@ -158,8 +158,6 @@ product_all %>%filter(location == "arikawagaramo") %>%
   ggplot()+
   geom_boxplot(aes(x = month, y = -RP, group = month, fill = location),
                outlier.colour = NA)+
-  geom_smooth(aes(x = month, y = -RP), 
-              method = "gam", formula = y~ s(x, k = 7, bs = "cs"))+
   scale_x_continuous("", 
                      minor_breaks = 1:12,
                      breaks = c(1, 6, 12),
@@ -181,9 +179,6 @@ product_all %>%
   ggplot()+
   geom_boxplot(aes(x = month, y = GEP, group = month, fill = "location"),
                outlier.colour = NA)+
-  geom_smooth(aes(x = month, y = GEP),
-              method = "gam",
-              formula = y~s(x,k = 10, bs = "cs"))+
   scale_x_continuous("", 
                      minor_breaks = 1:12,
                      breaks = c(1,5, 8, 12),
