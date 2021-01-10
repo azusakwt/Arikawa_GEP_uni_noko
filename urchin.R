@@ -38,14 +38,25 @@ urchin_day_mean =urchin_day %>% ungroup() %>%
   group_by(year, month, urchin) %>% 
   summarise(individual = mean(individual))%>% print(n = Inf)
 
+
+
 WIDTH = 297/2
 HEIGHT = 210/2
 CLRS = as.vector(palette.colors(palette = "Okabe-Ito"))
 ylabel = expression("Counts"~("indv."~m^{-2}))
+
+write_csv(urchin_day_mean, "urchins.csv")
 urchin_day_mean %>% 
-  mutate(urchin = recode(urchin, "hcrassispina" = "Heliocidaris crassispina",
+  mutate(urchin = recode(urchin, 
+                         "hcrassispina" = "Heliocidaris crassispina",
                          "dsetosum" = "Diadema setosum")) %>% 
-ggplot(aes(x = year+(month-1)/12, y = individual, color = urchin))+
+  group_by(year, urchin) %>% 
+  summarise_at(vars(individual),
+               list(sd = sd,
+                    mean = mean),
+               na.rm = T) %>% 
+ggplot(aes(x = year, 
+           y = mean, color = urchin))+
   geom_point()+
   geom_line()+
   scale_x_continuous("",

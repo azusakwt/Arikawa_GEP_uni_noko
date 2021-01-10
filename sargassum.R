@@ -100,6 +100,7 @@ garamo = garamo %>%
 
 garamo %>% print(n = Inf)
 
+write_csv(garamo, "sargassum.csv")
 # figure---------------------------
 WIDTH = 297/2
 HEIGHT = 210/2
