@@ -40,9 +40,10 @@ oxy = oxy_all %>% mutate(month = month(Date),
                          year = year(Date)) %>% 
   mutate(H = hour(datetime) + minute(datetime)/60)
 
+
 #一次生産量の計算----------------------------
-caluculate_rate=function(data){
-  out=mgcv::gam(oxygen~s(H,bs="cs"),data=data)
+calculate_rate=function(data){
+  out=mgcv::gam(oxygen~s(H, k = 20),data=data)
   y1=predict(out)
   eps=1e-6
   y2=predict(out,newdata=data_frame(H=data$H+eps))
@@ -68,10 +69,38 @@ oxygen_rate = oxy_all %>%
   mutate(H = hour(datetime)+minute(datetime)/60) %>%
   group_by(Date, location, position) %>%
   nest() %>% ungroup() %>%
-  mutate(rate=map(data,caluculate_rate)) %>%
+  mutate(rate=map(data,calculate_rate)) %>%
   select(-data) %>%
   unnest() %>%
   select(Date, location, position, rate, datetime, oxygen,temperature)
+
+kyphosus = 15
+siganus = 19
+
+oxygen_rate %>% 
+  filter(str_detect(location, "garamo")) %>% 
+  ungroup() %>% 
+  group_by(Date, datetime) %>% 
+  summarise(temperature = mean(temperature)) %>% 
+  group_by(Date) %>% 
+  summarise_at(vars(temperature),
+            list(daily_sd = sd, daily_mean = mean, daily_min = min, daily_max = max, n = ~length(.)), na.rm = TRUE) %>% 
+  write_csv("temperature.csv")
+
+
+oxygen_rate %>% 
+  filter(str_detect(location, "garamo")) %>% 
+  filter(!str_detect(position, "surface")) %>% 
+  ungroup() %>% 
+  group_by(Date, datetime) %>% 
+  summarise(temperature = mean(temperature)) %>% 
+  group_by(Date) %>% 
+  summarise_at(vars(temperature),
+               list(daily_sd = sd, 
+                    daily_mean = mean, 
+                    daily_min = min, daily_max = max, n = ~length(.)), na.rm = TRUE) %>% 
+  write_csv("temperature_no-surface.csv")
+
 
 write_csv(oxygen_rate,"oxygen_rate.csv")
 

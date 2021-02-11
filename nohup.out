@@ -1,0 +1,1004 @@
+── [1mAttaching packages[22m ─────────────────────────────────────── tidyverse 1.3.0 ──
+[32m✓[39m [34mggplot2[39m 3.3.2     [32m✓[39m [34mpurrr  [39m 0.3.4
+[32m✓[39m [34mtibble [39m 3.0.4     [32m✓[39m [34mdplyr  [39m 1.0.2
+[32m✓[39m [34mtidyr  [39m 1.1.2     [32m✓[39m [34mstringr[39m 1.4.0
+[32m✓[39m [34mreadr  [39m 1.4.0     [32m✓[39m [34mforcats[39m 0.5.0
+── [1mConflicts[22m ────────────────────────────────────────── tidyverse_conflicts() ──
+[31mx[39m [34mdplyr[39m::[32mfilter()[39m masks [34mstats[39m::filter()
+[31mx[39m [34mdplyr[39m::[32mlag()[39m    masks [34mstats[39m::lag()
+
+Attaching package: ‘lubridate’
+
+The following objects are masked from ‘package:base’:
+
+    date, intersect, setdiff, union
+
+Loading required package: Rcpp
+Loading 'brms' package (version 2.14.0). Useful instructions
+can be found by typing help('brms'). A more detailed introduction
+to the package is available through vignette('brms_overview').
+
+Attaching package: ‘brms’
+
+The following object is masked from ‘package:stats’:
+
+    ar
+
+
+Attaching package: ‘tidybayes’
+
+The following objects are masked from ‘package:brms’:
+
+    dstudent_t, pstudent_t, qstudent_t, rstudent_t
+
+This is bayesplot version 1.7.2
+- Online documentation and vignettes at mc-stan.org/bayesplot
+- bayesplot theme set to bayesplot::theme_default()
+   * Does _not_ affect other ggplot2 plots
+   * See ?bayesplot_theme_set for details on theme setting
+[1] "/home/gnishihara/Data/Consultations/Arikawa_GEP_uni_noko"
+                   prior     class                               coef group
+                  (flat)         b                                         
+                  (flat) Intercept                                         
+                  (flat)         b                                         
+                  (flat)         b                               PPFD      
+                  (flat)         b                PPFD:stateVegetated      
+                  (flat)         b                          PPFD:TEMP      
+                  (flat)         b           PPFD:TEMP:stateVegetated      
+                  (flat)         b                     stateVegetated      
+                  (flat)         b                               TEMP      
+                  (flat)         b                TEMP:stateVegetated      
+  student_t(3, 2.5, 2.5) Intercept                                         
+       gamma(0.01, 0.01)     shape                                         
+                  (flat)         b                                         
+                  (flat)         b                     stateVegetated      
+    student_t(3, 0, 2.5) Intercept                                         
+    student_t(3, 0, 2.5)       sds                                         
+    student_t(3, 0, 2.5)       sds s(month,k=4,by=state,bs="cc",id=0)      
+                  (flat)         b                                         
+                  (flat)         b          smonth:stateDesertified_1      
+                  (flat)         b            smonth:stateVegetated_1      
+                  (flat)         b                     stateVegetated      
+    student_t(3, 0, 2.5) Intercept                                         
+    student_t(3, 0, 2.5)       sds                                         
+    student_t(3, 0, 2.5)       sds         s(month,k=4,by=state,id=0)      
+                  (flat)         b                                         
+                  (flat)         b                     stateVegetated      
+ student_t(3, 20.7, 4.8) Intercept                                         
+    student_t(3, 0, 4.8)       sds                                         
+    student_t(3, 0, 4.8)       sds s(month,k=6,by=state,bs="cc",id=0)      
+                  (flat)         b                                         
+                  (flat)         b          smonth:stateDesertified_1      
+                  (flat)         b            smonth:stateVegetated_1      
+                  (flat)         b                     stateVegetated      
+    student_t(3, 0, 2.5) Intercept                                         
+    student_t(3, 0, 4.8)       sds                                         
+    student_t(3, 0, 4.8)       sds         s(month,k=6,by=state,id=0)      
+ resp  dpar nlpar bound       source
+                             default
+                             default
+  GEP                   (vectorized)
+  GEP                   (vectorized)
+  GEP                   (vectorized)
+  GEP                   (vectorized)
+  GEP                   (vectorized)
+  GEP                   (vectorized)
+  GEP                   (vectorized)
+  GEP                   (vectorized)
+  GEP                        default
+  GEP                        default
+ PPFD                   (vectorized)
+ PPFD                   (vectorized)
+ PPFD                        default
+ PPFD                        default
+ PPFD                   (vectorized)
+ PPFD shape             (vectorized)
+ PPFD shape             (vectorized)
+ PPFD shape             (vectorized)
+ PPFD shape             (vectorized)
+ PPFD shape                  default
+ PPFD shape                  default
+ PPFD shape             (vectorized)
+ TEMP                   (vectorized)
+ TEMP                   (vectorized)
+ TEMP                        default
+ TEMP                        default
+ TEMP                   (vectorized)
+ TEMP sigma             (vectorized)
+ TEMP sigma             (vectorized)
+ TEMP sigma             (vectorized)
+ TEMP sigma             (vectorized)
+ TEMP sigma                  default
+ TEMP sigma                  default
+ TEMP sigma             (vectorized)
+Compiling Stan program...
+Start sampling
+Running MCMC with 4 parallel chains, with 4 thread(s) per chain...
+
+Chain 1 Rejecting initial value:
+Chain 1   Error evaluating the log probability at the initial value.
+Chain 1 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 1 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 1 Rejecting initial value:
+Chain 1   Error evaluating the log probability at the initial value.
+Chain 1 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 11 to column 16) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 1 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 11 to column 16) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 1 Rejecting initial value:
+Chain 1   Error evaluating the log probability at the initial value.
+Chain 1 Exception: Exception: gamma_lpdf: Inverse scale parameter[58] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 1 Exception: Exception: gamma_lpdf: Inverse scale parameter[58] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 1 Rejecting initial value:
+Chain 1   Error evaluating the log probability at the initial value.
+Chain 1 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 1 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 1 Rejecting initial value:
+Chain 1   Error evaluating the log probability at the initial value.
+Chain 1 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 1 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 1 Rejecting initial value:
+Chain 1   Error evaluating the log probability at the initial value.
+Chain 1 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 1 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 1 Rejecting initial value:
+Chain 1   Error evaluating the log probability at the initial value.
+Chain 1 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 1 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 1 Rejecting initial value:
+Chain 1   Error evaluating the log probability at the initial value.
+Chain 1 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -0.946883, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 39, column 4 to column 238) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 1 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -0.946883, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 39, column 4 to column 238) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 1 Gradient evaluation took 0.000508 seconds
+Chain 1 1000 transitions using 10 leapfrog steps per transition would take 5.08 seconds.
+Chain 1 Adjust your expectations accordingly!
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -2.05381, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -2.05381, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[30] is -0.0716201, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 37, column 4 to column 150) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[30] is -0.0716201, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 37, column 4 to column 150) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[2] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[2] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[4] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[4] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[34] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[34] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 4 to column 69) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 4 to column 69) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[75] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[75] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[55] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[55] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[71] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[71] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[58] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[58] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -0.458855, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 39, column 4 to column 238) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 49, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -0.458855, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 39, column 4 to column 238) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 49, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[4] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[4] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -0.285469, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 39, column 4 to column 238) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 49, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -0.285469, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 39, column 4 to column 238) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 49, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[48] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[48] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[5] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[5] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[13] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[13] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[2] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[2] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 4 to column 69) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 4 to column 69) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[34] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[34] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is -1.13365, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 42, column 6 to column 41) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 49, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is -1.13365, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 42, column 6 to column 41) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 49, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[72] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[72] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[56] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[56] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 4 to column 69) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 4 to column 69) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -0.512312, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -0.512312, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[4] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[4] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[72] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[72] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 4 to column 69) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 4 to column 69) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[34] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[34] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 4 to column 69) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 4 to column 69) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 4 to column 69) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 4 to column 69) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -1.9045, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 42, column 6 to column 41) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -1.9045, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 42, column 6 to column 41) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[58] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[58] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -0.382525, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 39, column 4 to column 238) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -0.382525, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 39, column 4 to column 238) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[58] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[58] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[73] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[73] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 4 to column 69) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 4 to column 69) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[10] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[10] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[58] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[58] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -1.496, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 42, column 6 to column 41) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -1.496, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 42, column 6 to column 41) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[76] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[76] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[73] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[73] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 4 to column 69) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 4 to column 69) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[78] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[78] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[41] is -0.450606, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 42, column 6 to column 41) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 49, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[41] is -0.450606, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 42, column 6 to column 41) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 49, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[66] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 4 to column 69) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[66] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 4 to column 69) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -24.2749, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 42, column 6 to column 41) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -24.2749, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 42, column 6 to column 41) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 4 Rejecting initial value:
+Chain 4   Error evaluating the log probability at the initial value.
+Chain 4 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 4 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 4 Rejecting initial value:
+Chain 4   Error evaluating the log probability at the initial value.
+Chain 4 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 4 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 4 Rejecting initial value:
+Chain 4   Error evaluating the log probability at the initial value.
+Chain 4 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 4 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 4 Rejecting initial value:
+Chain 4   Error evaluating the log probability at the initial value.
+Chain 4 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 4 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 4 Rejecting initial value:
+Chain 4   Error evaluating the log probability at the initial value.
+Chain 4 Exception: Exception: gamma_lpdf: Inverse scale parameter[54] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 4 Exception: Exception: gamma_lpdf: Inverse scale parameter[54] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 4 Rejecting initial value:
+Chain 4   Error evaluating the log probability at the initial value.
+Chain 4 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 4 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 4 Gradient evaluation took 0.000416 seconds
+Chain 4 1000 transitions using 10 leapfrog steps per transition would take 4.16 seconds.
+Chain 4 Adjust your expectations accordingly!
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 4 to column 69) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 23, column 4 to column 69) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[4] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[4] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[2] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[2] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[4] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[4] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[66] is -1.15158, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[66] is -1.15158, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[5] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[5] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[71] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[71] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -0.105991, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -0.105991, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[68] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[68] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[61] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[61] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[68] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[68] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -0.842302, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 42, column 6 to column 41) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 49, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -0.842302, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 42, column 6 to column 41) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 49, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[10] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[10] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[4] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[4] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -5.49301, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -5.49301, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Rejecting initial value:
+Chain 2   Error evaluating the log probability at the initial value.
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 2 Initialization between (-2, 2) failed after 100 attempts. 
+Chain 2  Try specifying initial values, reducing ranges of constrained values, or reparameterizing the model.
+Chain 2 Initialization failed.
+Warning: Chain 2 finished unexpectedly!
+
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[34] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[34] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[71] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[71] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[4] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[4] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[61] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[61] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[78] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[78] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[9] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[3] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[71] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[71] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[34] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[34] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[8] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -0.414207, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -0.414207, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[2] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[2] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[34] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[34] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[36] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[36] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -0.390604, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 39, column 4 to column 238) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is -0.390604, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 39, column 4 to column 238) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 48, column 4 to column 67)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is 0, but must be > 0! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 26, column 6 to column 48) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 29, column 4 to column 19)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[1] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Rejecting initial value:
+Chain 3   Error evaluating the log probability at the initial value.
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[78] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Exception: Exception: gamma_lpdf: Inverse scale parameter[78] is inf, but must be finite! (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64) (in '/tmp/RtmpNgs9YN/model-eade615b57a48.stan', line 28, column 4 to column 64)
+Chain 3 Initialization between (-2, 2) failed after 100 attempts. 
+Chain 3  Try specifying initial values, reducing ranges of constrained values, or reparameterizing the model.
+Chain 3 Initialization failed.
+Warning: Chain 3 finished unexpectedly!
+
+Chain 1 Iteration:    1 / 6000 [  0%]  (Warmup) 
+Chain 4 Iteration:    1 / 6000 [  0%]  (Warmup) 
+Chain 1 Iteration: 1000 / 6000 [ 16%]  (Warmup) 
+Chain 4 Iteration: 1000 / 6000 [ 16%]  (Warmup) 
+Chain 4 Iteration: 2000 / 6000 [ 33%]  (Warmup) 
+Chain 4 Iteration: 2001 / 6000 [ 33%]  (Sampling) 
+Chain 1 Iteration: 2000 / 6000 [ 33%]  (Warmup) 
+Chain 1 Iteration: 2001 / 6000 [ 33%]  (Sampling) 
+Chain 4 Iteration: 3000 / 6000 [ 50%]  (Sampling) 
+Chain 4 Iteration: 4000 / 6000 [ 66%]  (Sampling) 
+Chain 4 Iteration: 5000 / 6000 [ 83%]  (Sampling) 
+Chain 4 Iteration: 6000 / 6000 [100%]  (Sampling) 
+Chain 4 finished in 10.9 seconds.
+Chain 1 Iteration: 3000 / 6000 [ 50%]  (Sampling) 
+Chain 1 Iteration: 4000 / 6000 [ 66%]  (Sampling) 
