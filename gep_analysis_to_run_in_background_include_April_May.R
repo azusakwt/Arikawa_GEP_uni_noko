@@ -15,11 +15,11 @@ library(multidplyr)
 
 getwd()
 dset = readRDS("prepared_brms_data.rds")
-dset = dset %>% mutate(PPFD = PPFD * sd_ppfd + mean_ppfd,TEMP = TEMP * sd_temp + mean_temp)
+# dset = dset %>% mutate(PPFD = PPFD * sd_ppfd + mean_ppfd,TEMP = TEMP * sd_temp + mean_temp)
 
-WARMUP  = 2000
+WARMUP  = 5000
 SAMPLES = 2000
-SEED    = 2020
+SEED    = 2021
 CHAINS = CORES = 4
 
 CTRL = list(adapt_delta = 0.9999999999, max_treedepth = 30)
@@ -28,7 +28,7 @@ dsetZ = dset %>% filter(str_detect(location, "Z"))
 dsetS = dset %>% filter(str_detect(location, "S"))
 
 ggplot(dsetZ) +
-  geom_boxplot(aes(x= month, y = PPFD, group = month)) +
+  geom_point(aes(x= month, y = PPFD, group = month)) +
   facet_grid(rows = vars(state))
 
 ################################################################################
@@ -59,7 +59,7 @@ ggplot(dsetZ) +
 # 
 
 ppfdmodel = bf(PPFD  ~ s(month, k = 4, by = state, bs = "cc", id = 0) + state,
-               shape ~ s(month, k = 4, by = state, id = 0) + state ) + Gamma("inverse")
+               sigma ~ s(month, k = 6, by = state, id = 0) + state ) + gaussian()
 
 # testZ = brm(ppfdmodel, data = dsetZ, seed = SEED, chains = CHAINS, cores = CORES, knots = list(month = c(0.5, 12.5)), control = list(adapt_delta = 0.999, max_treedepth = 20))
 # testS = update(testZ, newdata = dsetS, seed = SEED, chains = CHAINS, cores = CORES, knots = list(month = c(0.5, 12.5)), control = list(adapt_delta = 0.999, max_treedepth = 20))
@@ -84,17 +84,19 @@ PRIORS =
   set_prior("student_t(3, 0, 1)", class = "b", coef = "stateVegetated", resp = "GEP") +
   set_prior("normal(0, 1)", class = "shape", resp = "GEP") +
   
-  set_prior("student_t(3, 0, 1)", class = "b",         resp = "PPFD") +
-  set_prior("normal(0, 2)", class = "Intercept", resp = "PPFD") +
-  set_prior("student_t(3, 0, 1)",  class = "b",         resp = "PPFD", dpar = "shape") +
-  set_prior("student_t(3, 0, 1)",  class = "sds",       resp = "PPFD", dpar = "shape") +
-  set_prior("normal(20, 2)",       class = "Intercept", resp = "PPFD", dpar = "shape") +  
+  set_prior("student_t(3, 0, 2)", class = "b",         resp = "PPFD") +
+  set_prior("student_t(3, 0, 1)",  class = "sds",       resp = "PPFD") +
+  set_prior("normal(0, 1)",      class = "Intercept", resp = "PPFD") +
+  set_prior("student_t(3, 0, 1)",  class = "b",         resp = "PPFD", dpar = "sigma") +
+  set_prior("student_t(3, 0, 1)",  class = "sds",       resp = "PPFD", dpar = "sigma") +
+  set_prior("normal(0, 2)",        class = "Intercept", resp = "PPFD", dpar = "sigma") +  
   
   set_prior("student_t(3, 0, 1)",  class = "b",         resp = "TEMP") +
+  set_prior("student_t(3, 0, 1)",  class = "sds",       resp = "TEMP") +
   set_prior("normal(0, 2)",        class = "Intercept", resp = "TEMP") +
   set_prior("student_t(3, 0, 1)",  class = "b",         resp = "TEMP", dpar = "sigma") +
   set_prior("student_t(3, 0, 1)",  class = "sds",       resp = "TEMP", dpar = "sigma") +
-  set_prior("normal(20, 2)",       class = "Intercept", resp = "TEMP", dpar = "sigma") 
+  set_prior("normal(0, 2)",       class = "Intercept", resp = "TEMP", dpar = "sigma") 
 
 z1 = lubridate::now()
 boutZ = brm(completemodel, 
@@ -106,9 +108,14 @@ boutZ = brm(completemodel,
             prior = PRIORS,
             backend = "cmdstanr",
             threads = threading(4),
-            refresh = 1000,
+            refresh = 3000,
             knots = list(month = c(0.5, 12.5)))
 z2 = lubridate::now()
+
+summary(boutZ)
+boutZ %>% tidy_draws() %>% pull(treedepth__) %>% range() # Range of treedepth
+boutZ %>% tidy_draws() %>% pull(divergent__) %>% sum()
+
 
 s1 = lubridate::now()
 boutS = update(boutZ, 
@@ -119,7 +126,7 @@ boutS = update(boutZ,
             control = CTRL,
             backend = "cmdstanr",
             threads = threading(4),
-            refresh = 1000,
+            refresh = 3000,
             knots = list(month = c(0.5, 12.5)))
 s2 = lubridate::now()
 
