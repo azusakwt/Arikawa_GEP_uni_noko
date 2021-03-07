@@ -111,15 +111,14 @@ if(!file.exists("alldata.rds")) {
   alldata = alldata %>% 
     select(-temperature.jma) %>% 
     rowwise() %>% 
-    mutate(temperature = 0.2 * (temperature_0m + 
+    mutate(temperature = 0.25 * (temperature_0m + 
                                   temperature_1m +
-                                  temperature_surface +
                                   temperature.cem + 
                                   temperature.cku),
            .before = oxygen_0m) %>%  
+    rename(surfacetemperature = temperature_surface) %>% 
     select(-c(temperature_0m, 
               temperature_1m,
-              temperature_surface,
               temperature.cem, 
               temperature.cku)) %>% 
     pivot_longer(cols = (starts_with("oxygen")),
@@ -142,7 +141,7 @@ if(!file.exists("alldata.rds")) {
                 values_from = c(oxygen, rate)) 
   
   alldata = alldata %>% 
-    mutate(mt = try_calc_mt(wind, temperature, salinity = 32, oxygen_surface), 
+    mutate(mt = try_calc_mt(wind, surfacetemperature, salinity = 32, oxygen_surface), 
            .before = temperature)
   
   saveRDS(alldata, file = "alldata.rds")
@@ -166,7 +165,7 @@ mad = function(x, na.rm = T) {
 # truncate speed, chl-a, turbidity, wind, gust, and ppfd.microstation data
 # since the imputePCA() might set them to negative values.
 alldata = alldata %>% 
-  mutate(across(c(speed, chla, turbidity, wind, gust, ppfd.microstation),
+  mutate(across(c(speed, chla, turbidity, wind, gust, ppfd.microstation, surfacetemperature),
                 ~ ifelse(. < 0, 0, .)))
 
 alldata_daily = alldata %>% 
@@ -200,7 +199,7 @@ alldata_daily_env = alldata %>%
   mutate(year = year(date),
          location = factor(location)) %>% ungroup() %>% 
   group_by(location, year, date) %>% 
-  summarise(across(c(temperature, speed, chla, turbidity, wind, rain),
+  summarise(across(c(temperature, speed, chla, turbidity, wind, rain, surfacetemperature),
                    list(mean = mean,
                         sd = sd,
                         median = median,

@@ -583,7 +583,7 @@ p7 = ggplot(cfs) +
   scale_y_discrete("Population coefficient") +
   scale_fill_manual(values = viridis::viridis(3)) +
   guides(fill = guide_legend(override.aes = list(shape = NA))) +
-  coord_cartesian(xlim = c(-1,1)) +
+  coord_cartesian(xlim = c(-4,4)) +
   facet_grid(cols = vars(location)) +
   ggpubr::theme_pubr() +
   theme(legend.position = c(1,1),
