@@ -11,7 +11,7 @@ library(lubridate)
 library(gnnlab)
 library(readxl)
 library(furrr)
-plan(multisession, workers = 20)
+plan(multisession, workers = 20) # furrr に必要
 
 Sys.setlocale("LC_TIME", "en_US.UTF-8") # アメリカ英語に設定
 
@@ -51,8 +51,8 @@ cku = cku %>% group_by(datetime) %>%
 
 depth = read_csv("tidaldata.csv") %>% select(datetime, depth) # From predict_tides.R
 
-tmp = read_csv("~/Lab_Data/weather/201701_20208_Arikawa_JMA_Data.csv")
-weather = read_csv("~/Lab_Data/weather/2020_Arikawa_JMA_Data.csv")
+tmp = read_csv("~/Lab_Data/weather/201701_202012_Arikawa_JMA_Data.csv")
+weather = read_csv("~/Lab_Data/weather/202101_202102_Arikawa_JMA_Data.csv")
 weather = bind_rows(tmp, weather) %>% distinct()
 
 microstation = tibble(fnames = dir(str_glue("{KAWATE}/Microstation"), full = TRUE, pattern = "arik")) %>%
@@ -121,9 +121,9 @@ library(missMDA)
 
 X = alldata %>% select(-c(location, datetime, starts_with("oxygen")))
 
-# Xpca = PCA(X)
-
-Xadj = imputePCA(X, ncp = 10) # takes some time to run.
+# Xpca = PCA(X, graph = FALSE)
+# Xpca %>% summary()
+Xadj = imputePCA(X, ncp = 10) # takes some time to run. 最初の 10 Dim.x を使う
 
 alldata_adj = bind_cols(
   alldata %>% select(c(location, datetime, starts_with("oxygen"))),

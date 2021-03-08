@@ -95,22 +95,24 @@ try_calc_mt = possibly(masstransfer, otherwise = NA)
 # NEP の計算 ----
 
 calculate_rate=function(data, k = 10){
-  out=mgcv::gam(oxygen~s(H, k = k, bs = "cs"),data=data)
+  data = data %>% mutate(H = hour(datetime) + minute(datetime) / 60)
+  out=mgcv::gam(oxygen~s(H, k = k, bs = "cs"), data=data)
   y1=predict(out)
   eps=1e-6
-  y2=predict(out,newdata=data_frame(H=data$H+eps))
+  y2=predict(out,newdata = tibble(H=data$H+eps))
   data %>% mutate(rate=(y2-y1)/eps)
 }
 try_calc_rate = possibly(calculate_rate, otherwise = NA)
 
-
+# alldata.rds をアップデートするなら、
+# alldata.rds をさきに削除してください。
+ 
 if(!file.exists("alldata.rds")) {
   
   alldata = read_csv("fulldataset.csv")
   
   alldata = alldata %>% 
     select(-temperature.jma) %>% 
-    rowwise() %>% 
     mutate(temperature = 0.25 * (temperature_0m + 
                                   temperature_1m +
                                   temperature.cem + 
@@ -125,8 +127,6 @@ if(!file.exists("alldata.rds")) {
                  values_to = "oxygen")
   
   ################################################################################
-  library(furrr)
-  plan(multisession, workers = 20)
   
   alldata = alldata %>% 
     group_nest(location, name, date) %>% 
@@ -141,7 +141,8 @@ if(!file.exists("alldata.rds")) {
                 values_from = c(oxygen, rate)) 
   
   alldata = alldata %>% 
-    mutate(mt = try_calc_mt(wind, surfacetemperature, salinity = 32, oxygen_surface), 
+    mutate(mt = try_calc_mt(wind, surfacetemperature, 
+                            salinity = 32, oxygen_surface), 
            .before = temperature)
   
   saveRDS(alldata, file = "alldata.rds")
