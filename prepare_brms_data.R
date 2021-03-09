@@ -268,7 +268,7 @@ dset = dset %>% mutate(month.abb = factor(month,
 
 dset = dset %>% mutate(state = factor(state))
 
-dset %>% saveRDS("brms_simplemodel_20210308.rds")
+dset %>% saveRDS("prepared_brms_data.rds")
 # dset %>% 
 #   relocate(TEMP, state, .before = GEP) %>% 
 #   ungroup() %>% 
