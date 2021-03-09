@@ -67,7 +67,8 @@ bseries = function(n) {
 
 aseries(4)
 ################################################################################
-
+# (1) create_dataset.R 
+# (2) prepare_brms_data.R 
 dset = readRDS("prepared_brms_data.rds")
 # dset = dset %>% mutate(PPFD = PPFD * sd_ppfd + mean_ppfd,TEMP = TEMP * sd_temp + mean_temp)
 
