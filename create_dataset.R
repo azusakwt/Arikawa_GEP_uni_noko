@@ -98,7 +98,15 @@ light_0 = light %>% filter(position == "0m") %>%
 light_1 = light_0 %>% 
   distinct(Date,location,datetime,.keep_all = TRUE) %>% 
   mutate(light_group = ifelse(ppfd>0,TRUE,FALSE)) %>% 
-  select(location, datetime, ppfd.water = ppfd, light_group)
+  select(location, id,datetime, ppfd.water = ppfd, light_group)
+
+calib = read_csv("~/Lab_Data/kawatea/Odyssey_Calibration/Light_caliblation_2021.csv") %>% 
+  mutate(id = as.character(id))
+
+light_all = left_join(light_1, calib, by = "id") %>% 
+  mutate(ppfd.water = ppfd.water*calibration_coefficient) %>% 
+  select(-calibration_coefficient)
+
 # Join all of the data
 
 tmp = full_join(
@@ -133,7 +141,7 @@ oxydata = oxy_all %>%
   })) %>% unnest(data)
 
 alldata = left_join(oxydata, envdata, by = "datetime")
-alldata = left_join(alldata, light_1, by = c("datetime", "location"))
+alldata = left_join(alldata, light_all, by = c("datetime", "location"))
 
 # alldata %>% select(datetime, matches("ppfd"))
 ################################################################################  
