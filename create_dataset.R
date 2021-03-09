@@ -77,6 +77,28 @@ oxy_all = left_join(kikan, oxygen, by = c("location", "Date")) %>%
   drop_na(oxygen) %>%
   select(location, datetime, position, oxygen,　temperature, Date)
 
+light = tibble(fnames =dir(str_glue("{KAWATE}/Light/"), full = TRUE), 
+               type = str_extract(fnames, "xlxs|csv")) %>% 
+  mutate(data = map(fnames, read_odyssey))
+
+light = light %>% mutate(fnames = basename(fnames)) %>% 
+  separate(fnames, into = c("type", "id", "location", "position", "date"))
+
+light = light %>% unnest(data) %>% 
+  select(location,id, position, datetime, ppfd) %>% 
+  mutate(Date = as.Date(datetime))
+
+light = left_join(kikan, light, by = c("location", "Date")) %>% 
+  drop_na(ppfd) %>% 
+  select(location,id, position, Date, datetime, ppfd)
+
+light_0 = light %>% filter(position == "0m") %>% 
+  select(-position)
+
+light_1 = light_0 %>% 
+  distinct(Date,location,datetime,.keep_all = TRUE) %>% 
+  mutate(light_group = ifelse(ppfd>0,TRUE,FALSE)) %>% 
+  select(location, datetime, ppfd.water = ppfd, light_group)
 # Join all of the data
 
 tmp = full_join(
@@ -111,7 +133,9 @@ oxydata = oxy_all %>%
   })) %>% unnest(data)
 
 alldata = left_join(oxydata, envdata, by = "datetime")
+alldata = left_join(alldata, light_1, by = c("datetime", "location"))
 
+alldata %>% select(datetime, ppfd.water)
 ################################################################################  
 # Use PCA to impute missing values.
 ################################################################################
