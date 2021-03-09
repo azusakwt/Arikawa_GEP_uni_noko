@@ -12,8 +12,8 @@ library(ggpubr)
 
 ###############################################################
 # make figure---------------
-sargassum = read_csv("sargassum.csv")
-urchins = read_csv("urchins.csv")
+sargassum = read_csv("~/Lab_Data/kamigotoR2/sargassum/sargassum.csv")
+urchins =   read_csv("~/Lab_Data/kamigotoR2/urchins/urchins.csv")
 
 urchins %>% 
   drop_na() %>% 
@@ -268,7 +268,7 @@ dset = dset %>% mutate(month.abb = factor(month,
 
 dset = dset %>% mutate(state = factor(state))
 
-dset %>% saveRDS("prepared_brms_data.rds")
+dset %>% saveRDS("brms_simplemodel_20210308.rds")
 # dset %>% 
 #   relocate(TEMP, state, .before = GEP) %>% 
 #   ungroup() %>% 

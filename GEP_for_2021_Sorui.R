@@ -69,7 +69,7 @@ aseries(4)
 ################################################################################
 # (1) create_dataset.R 
 # (2) prepare_brms_data.R 
-dset = readRDS("prepared_brms_data.rds")
+dset = readRDS("brms_simplemodel_20210308.rds")
 # dset = dset %>% mutate(PPFD = PPFD * sd_ppfd + mean_ppfd,TEMP = TEMP * sd_temp + mean_temp)
 
 dset %>% summarise(across(c(TEMP, PPFD), list(min=min, mean=mean, median=median, max=max)))
@@ -164,8 +164,8 @@ bseries = function(n) {
 
 ###############################################################
 # Read Urchin and Sargassum data ----
-sargassum = read_csv("sargassum.csv")
-urchins = read_csv("urchins.csv")
+sargassum = read_csv("~/Lab_Data/kamigotoR2/sargassum/sargassum.csv")
+urchins =   read_csv("~/Lab_Data/kamigotoR2/urchins/urchins.csv")
 
 urchins %>% 
   drop_na() %>% 
