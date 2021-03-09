@@ -110,6 +110,7 @@ try_calc_rate = possibly(calculate_rate, otherwise = NA)
 if(!file.exists("alldata.rds")) {
   
   alldata = read_csv("fulldataset.csv")
+  alldata = alldata %>% mutate(ppfd.water = ifelse(ppfd.water < 0, 0, ppfd.water))
   
   alldata = alldata %>% 
     select(-temperature.jma) %>% 
@@ -162,7 +163,7 @@ mad = function(x, na.rm = T) {
   median(abs(xbar))
 }
 
-
+alldata %>% pull(ppfd.water) %>% range(na.rm=T)
 # truncate speed, chl-a, turbidity, wind, gust, and ppfd.microstation data
 # since the imputePCA() might set them to negative values.
 alldata = alldata %>% 
@@ -267,23 +268,23 @@ dset = dset %>% mutate(month.abb = factor(month,
 
 dset = dset %>% mutate(state = factor(state))
 
-
-dset %>% 
-  relocate(TEMP, state, .before = GEP) %>% 
-  ungroup() %>% 
-  group_by(location) %>% 
-  summarise(mean_ppfd = mean(PPFD),
-         sd_ppfd = sd(PPFD),
-         mean_temp = mean(TEMP),
-         sd_temp = sd(TEMP))
-
-dset %>% ungroup() %>% 
-  relocate(TEMP, .before = GEP) %>% 
-  group_by(location) %>% 
-  mutate(mean_ppfd = mean(PPFD),
-         sd_ppfd = sd(PPFD),
-         mean_temp = mean(TEMP),
-         sd_temp = sd(TEMP), .before = PPFD) %>% ungroup() %>% 
-  mutate(PPFD = (PPFD - mean_ppfd)/ sd_ppfd, .after = PPFD) %>% 
-  mutate(TEMP = (TEMP - mean_temp)/ sd_temp) %>% 
-  saveRDS("prepared_brms_data.rds")
+dset %>% saveRDS("prepared_brms_data.rds")
+# dset %>% 
+#   relocate(TEMP, state, .before = GEP) %>% 
+#   ungroup() %>% 
+#   group_by(location) %>% 
+#   summarise(mean_ppfd = mean(PPFD),
+#          sd_ppfd = sd(PPFD),
+#          mean_temp = mean(TEMP),
+#          sd_temp = sd(TEMP))
+# 
+# dset %>% ungroup() %>% 
+#   relocate(TEMP, .before = GEP) %>% 
+#   group_by(location) %>% 
+#   mutate(mean_ppfd = mean(PPFD),
+#          sd_ppfd = sd(PPFD),
+#          mean_temp = mean(TEMP),
+#          sd_temp = sd(TEMP), .before = PPFD) %>% ungroup() %>% 
+#   mutate(PPFD = (PPFD - mean_ppfd)/ sd_ppfd, .after = PPFD) %>% 
+#   mutate(TEMP = (TEMP - mean_temp)/ sd_temp) %>% 
+#   saveRDS("prepared_brms_data.rds")

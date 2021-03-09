@@ -29,9 +29,9 @@ class: center, middle, inverse, title-slide
 
 $$
 `\begin{aligned}
-\log(\mu_{P}) &amp;= f_{cc}(M_i) + f_{tp}(M_i | S_j) + S_j \\
-\mu_{T} &amp;= f_{cc}(M_i) + f_{tp}(M_i | S_j) + f_{tp}(M_i | L_k) + S_j + L_k\\
-\log(\mu_{G}) &amp;=   \beta_P \mu_P + \beta_T \mu_T + \beta_S S_j + \beta_L L_k \\
+\log(\mu_{P}) &amp;= f_{P}^{cc}(M_{[i]}) + f_{P}^{tp}(M_{[i,j]}) + f_{P}^{tp}(M_{[i,k]}) +  S_{\mu_P[j]} +  L_{\mu_P[k]} + U_{P[j,k]} + V_{P[i,j,k]}\\
+\mu_{T} &amp;= f_{T}^{cc}(M_{[i]}) + f_{T}^{tp}(M_{[i,j]}) + f_{T}^{tp}(M_{[i,k]}) +  S_{\mu_T[j]} +  L_{\mu_T[k]} + U_{T[j,k]} + V_{T[i,j,k]}\\
+\log(\mu_{G}) &amp;=   \beta_{P[j,k]} \mu_P + \beta_{T[j,k]} \mu_T +S_{\mu_G[j]} + L_{\mu_G[j,k]} + U_{G[j,k]}\mu_P + V_{G[j,k]}\mu_T + W_{G[i,j,k]}\\
 \end{aligned}`
 $$
 **Distribution for observations**
@@ -48,7 +48,7 @@ $$
 
 * `\(P\)`, `\(T\)`, `\(G\)`: PPFD, Temperature, and GEP
 * `\(M\)`, `\(S\)`, `\(L\)`: `\(i\)` Months,  `\(j\)` States, and `\(k\)` Locations
-* `\(f_{cc}\)`, `\(f_{tp}\)`: Cyclic cubic spline and Thin-plate splie
+* `\(f^{cc}()\)`, `\(f^{tp}()\)`: Cyclic cubic spline and Thin-plate spline
 
 ]
 
@@ -56,6 +56,8 @@ $$
 * `\(y_P\)`, `\(y_T\)`, `\(y_G\)`: Observations
 * `\(\theta\)`, `\(\sigma\)`: Scale parameters
 * `\(\mu\)`:  Location parameter
+* `\(U_P\)`, `\(U_T\)`: Variance between Site and Location
+* `\(V_P\)`, `\(V_T\)`, `\(W_G\)`: Variance between Month, Site, and Location
 ]
 
 ---
@@ -65,9 +67,12 @@ $$
 $$
 `\begin{aligned}
 \theta_P, \theta_G, \sigma_T       &amp;\sim N(0, 1) \\
-\beta_P, \beta_T, \beta_S, \beta_L &amp;\sim N(0, 1) \\
+S, L &amp;\sim N(0, 1) \\
+U, V, W &amp;\sim N(0, 1) \\
+  \begin{bmatrix} \beta_{P} \\  \beta_{T}\\ \end{bmatrix} &amp;\sim MVN \left(\begin{bmatrix} \beta_{P} \\ \beta_{T} \\ \end{bmatrix}, \Sigma\right) \\
 \end{aligned}`
 $$
+
 
 ---
 

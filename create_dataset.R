@@ -143,7 +143,8 @@ oxydata = oxy_all %>%
 alldata = left_join(oxydata, envdata, by = "datetime")
 alldata = left_join(alldata, light_all, by = c("datetime", "location"))
 
-# alldata %>% select(datetime, matches("ppfd"))
+alldata %>% select(datetime, matches("ppfd"))
+
 ################################################################################  
 # Use PCA to impute missing values.
 ################################################################################
@@ -151,7 +152,20 @@ alldata = left_join(alldata, light_all, by = c("datetime", "location"))
 library(FactoMineR)
 library(missMDA)
 
-X = alldata %>% select(-c(location, datetime, starts_with("oxygen")))
+X = alldata %>% select(-c(location, datetime, id, light_group, starts_with("oxygen")))
+
+X = X %>% mutate(ppfd.microstation = log(ppfd.microstation),
+                 ppfd.water = log(ppfd.water + 1.2),
+                 wind = log(wind + 0.01),
+                 gust = log(gust + 0.01),
+                 wind.jma = log(wind.jma + 0.01),
+                 gust.jma = log(gust.jma + 0.01),
+                 speed = log(speed + 0.001),
+                 turbidity = log(turbidity + 0.01),
+                 chla = log(chla + 0.01),
+                 rain = log(rain + 0.01))
+
+
 
 # Xpca = PCA(X, graph = FALSE)
 # Xpca %>% summary()
@@ -188,5 +202,30 @@ alldata_adj = alldata_adj %>% mutate(month = month(datetime),
 
 
 alldata_adj %>% 
+  mutate(ppfd.microstation = exp(ppfd.microstation),
+         ppfd.water        = exp(ppfd.water) - 1.2,
+         wind              = exp(wind) - 0.01,
+         gust              = exp(gust) - 0.01,
+         wind.jma          = exp(wind.jma) - 0.01,
+         gust.jma          = exp(gust.jma) - 0.01,
+         speed             = exp(speed) - 0.001,
+         turbidity         = exp(turbidity) - 0.01,
+         chla              = exp(chla) - 0.01,
+         rain              = exp(rain) - 0.01) %>% 
   write_csv(file = "fulldataset.csv")
+
+
+alldata_adj %>% 
+  mutate(ppfd.microstation = exp(ppfd.microstation),
+         ppfd.water        = exp(ppfd.water) - 1.2,
+         wind              = exp(wind) - 0.01,
+         gust              = exp(gust) - 0.01,
+         wind.jma          = exp(wind.jma) - 0.01,
+         gust.jma          = exp(gust.jma) - 0.01,
+         speed             = exp(speed) - 0.001,
+         turbidity         = exp(turbidity) - 0.01,
+         chla              = exp(chla) - 0.01,
+         rain              = exp(rain) - 0.01) %>% pull(ppfd.water) %>% range()
+
+
 
