@@ -166,28 +166,30 @@ mad = function(x, na.rm = T) {
 # truncate speed, chl-a, turbidity, wind, gust, and ppfd.microstation data
 # since the imputePCA() might set them to negative values.
 alldata = alldata %>% 
-  mutate(across(c(speed, chla, turbidity, wind, gust, ppfd.microstation, surfacetemperature),
-                ~ ifelse(. < 0, 0, .)))
+  mutate(across(c(speed, chla, turbidity, wind, gust, ppfd.microstation, ppfd.water, surfacetemperature),
+                ~ ifelse(. < 0, 0, .))) %>% 
+mutate(ppfd.microstation = ppfd.microstation - 1.2) %>% 
+# mutate(ppfd = ppfd.microstation) %>%  # Previous
+mutate(ppfd = ppfd.water) # 2021/03/09
 
 alldata_daily = alldata %>% 
-  relocate(ppfd.microstation, .before = temperature) %>% 
+  relocate(ppfd, .before = temperature) %>% 
   mutate(depth = ifelse(str_detect(location, "garamo"),
                         depth + 3,
                         depth - 1)) %>% 
   mutate(rate = (rate_0m + rate_1m + rate_surface)/2*depth,
-         ppfd.microstation = ppfd.microstation - 1.2,
          .after = mt) %>% 
   mutate(year = year(date),
          location = factor(location)) %>% ungroup() %>% 
   group_by(location, year, date) %>% 
   summarise(
-    PPFD = sum(ppfd.microstation)*60*10 / 1000000,
+    PPFD = sum(ppfd)*60*10 / 1000000,
     dDEPTH = max(depth) - min(depth),
     MT = sum(mt)/6,
     NEP = sum(rate - mt)/6,
-    RP = sum((rate - mt) * (near(ppfd.microstation, 0)))/6,
-    day_hours = sum((ppfd.microstation > 0))/6,
-    night_hours = sum(near(ppfd.microstation, 0))/6) %>% 
+    RP = sum((rate - mt) * (near(ppfd, 0)))/6,
+    day_hours = sum((ppfd > 0))/6,
+    night_hours = sum(near(ppfd, 0))/6) %>% 
   mutate(RP = RP / night_hours * 24) %>% 
   mutate(GEP = NEP - RP, 
          .after= RP) %>% 

@@ -1,7 +1,9 @@
 # Run the GEP analysis 
 # Include all months
 # Initial time is June
-
+# Production version.
+# 2021 March 09
+################################################################################ 
 library(tidyverse)
 library(lubridate)
 library(gnnlab)

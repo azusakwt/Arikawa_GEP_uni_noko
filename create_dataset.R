@@ -135,7 +135,7 @@ oxydata = oxy_all %>%
 alldata = left_join(oxydata, envdata, by = "datetime")
 alldata = left_join(alldata, light_1, by = c("datetime", "location"))
 
-alldata %>% select(datetime, ppfd.water)
+# alldata %>% select(datetime, matches("ppfd"))
 ################################################################################  
 # Use PCA to impute missing values.
 ################################################################################

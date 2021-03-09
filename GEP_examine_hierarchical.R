@@ -342,8 +342,7 @@ p2 = ggplot() +
   # geom_text(aes(x = month, y = 10, label = l2),
   #           vjust = 1, hjust = 1,
   #           data = plotlabel) +
-  scale_y_continuous(parse(text = ylabel), labels = label_parsed,
-                     limits = c(-10, 15)) + 
+  scale_y_continuous(parse(text = ylabel), labels = label_parsed) + 
   
   scale_x_continuous("Month",
                      limits = c(0.5, 12.5),
@@ -668,6 +667,7 @@ cfs3 =
   mutate(across(everything(), exp)) %>% 
   mutate(I_S = 1 - b_GEP_Intercept / (b_GEP_Intercept + b_GEP_stateVegetated),
          I_Z = 1 - (b_GEP_Intercept + b_GEP_locationZ) / (b_GEP_Intercept + b_GEP_locationZ + b_GEP_stateVegetated)) %>% 
+  mutate(across(c(I_S, I_Z), ~ . * 100)) %>% 
   select(starts_with("I")) %>% 
   gather() %>% 
   group_by(key) %>% 
@@ -676,9 +676,11 @@ cfs3 =
                       labels = c("Sargassum",
                                  "Zostera")))
 
+# Calculate the mean and 95% Highest Density Credible Interval (95%HDCI)
+# 平均値と 95% 信用区間
 cfs3l = cfs3 %>% group_by(key) %>% 
   mean_hdci() %>% 
-    mutate(l = sprintf("%0.2f (%0.2f - %0.2f) %%", 
+    mutate(l = sprintf("%2.0f (%2.0f - %2.0f) %%", 
                        value, .lower, .upper))
 
 p9 = cfs3 %>% 
@@ -691,8 +693,8 @@ p9 = cfs3 %>%
   geom_text(aes(x = value, y = key, label = l),
             data = cfs3l,
             vjust = -0.5) +
-  scale_x_continuous(parse(text = "1 - (GEP[D]/GEP[V])~~('%')"), breaks = seq(-1, 1, by = 0.1),
-                     limits = c(0, 1)) +
+  scale_x_continuous(parse(text = "100 - (GEP[D]/GEP[V])~~('%')"), breaks = seq(-100, 100, by = 20),
+                     limits = c(0, 100)) +
   scale_y_discrete("Ecosystem") +
   scale_fill_manual(values = viridis::viridis(3)) +
   guides(fill = F) +
