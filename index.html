@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 ## Arikawa Bay, Nagasaki, Japan
 ### Gregory N. Nishihara
 ### Azusa Kawate
-### Updated 2021-03-09
+### Updated 2021-03-10
 
 ---
 
@@ -24,6 +24,101 @@ class: center, middle, inverse, title-slide
 
 
 
+
+class: middle, center
+# Simpler model
+
+---
+
+## 一般化線形モデル
+
+$$
+\log(\mu) = \mathbf{X} \beta  + L
+$$
+
+
+$$
+\mathbf{X} = 
+`\begin{bmatrix}
+1 &amp; P &amp; T &amp; S &amp; P \times T &amp; P \times S &amp; T \times S &amp; P \times T \times S
+\end{bmatrix}`
+$$
+
+$$
+\beta^T = 
+`\begin{bmatrix}
+\beta_0 &amp; \beta_P &amp; \beta_T &amp; \beta_S &amp; \beta_{P\times T} &amp; \beta_{P\times S} &amp; \beta_{T\times S} &amp; \beta_{P\times T\times S}
+\end{bmatrix}`
+$$
+
+**分布モデル**
+
+$$
+y \sim \Gamma(\mu / \theta, \theta)
+$$
+
+**記号について**
+
+.pull-left[
+
+* `\(y\)`: 観測値
+* `\(\mu\)`: 期待値
+* `\(\theta\)`: 尺度
+* `\(\mathbf{X}\)`: デサイン行列
+* `\(\Gamma(\cdot)\)`: ガンマ分布
+]
+.pull-right[
+
+* `\(\beta\)`: モデル係数
+* `\(P\)`, `\(T\)`: 光量子量 (P), 水温 (T), 状態 (S), 生態系 (L)
+* `\(S\)`: 状態 (S) = {Desertified, Vegetated}
+* `\(L\)`: 生態系 (L) = {Sargassum, Zostera}
+]
+
+
+---
+
+## The population and group level effects
+
+$$
+`\begin{aligned}
+\theta_P, \theta_G, \sigma_T       &amp;\sim N(0, 1) \\
+S, L &amp;\sim N(0, 1) \\
+U, V, W &amp;\sim N(0, 1) \\
+  \begin{bmatrix} \beta_{P} \\  \beta_{T}\\ \end{bmatrix} &amp;\sim MVN \left(\begin{bmatrix} \beta_{P} \\ \beta_{T} \\ \end{bmatrix}, \Sigma\right) \\
+\end{aligned}`
+$$
+
+
+---
+
+## BRMS Model
+
+
+```r
+gepmodel  = bf(GEP ~ PPFD * TEMP * state + location) + Gamma("log")
+CTRL = list(adapt_delta = 0.95, max_treedepth = 15)
+```
+
+
+
+```r
+PRIOR = get_prior(gepmodel, data = dset) %&gt;% 
+  mutate(prior = ifelse(str_detect(class, "b|Intercept|b"), "normal(0, 1)", prior)) %&gt;% 
+  mutate(prior = ifelse(str_detect(class, "sd"), "normal(0, 1)", prior)) %&gt;% 
+  mutate(prior = ifelse(str_detect(class, "shape|sigma"), "normal(0, 1)", prior)) %&gt;% 
+  filter(str_detect(coef, "^s\\(", negate = T))
+```
+
+---
+
+
+class: middle, center
+# Multilevel model
+
+## Not ready.
+
+---
 
 ## The linear model
 

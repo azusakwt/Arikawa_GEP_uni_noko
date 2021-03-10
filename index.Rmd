@@ -28,7 +28,98 @@ style_duo_accent(
 )
 ```
 
-## The linear model　(Complex model)
+class: middle, center
+# 藻類学会用モデル
+
+---
+
+## 一般化線形モデル
+
+$$
+\log(\mu) = \mathbf{X} \beta  + \beta_L L
+$$
+
+
+$$
+\mathbf{X} = 
+\begin{bmatrix}
+1 & P & T & S & P \times T & P \times S & T \times S & P \times T \times S
+\end{bmatrix}
+$$
+
+$$
+\beta^T = 
+\begin{bmatrix}
+\beta_0 & \beta_P & \beta_T & \beta_S & \beta_{P\times T} & \beta_{P\times S} & \beta_{T\times S} & \beta_{P\times T\times S}
+\end{bmatrix}
+$$
+
+**分布モデル**
+
+$$
+y \sim \Gamma(\mu / \theta, \theta)
+$$
+
+**記号について**
+
+.pull-left[
+
+* $y$: 観測値 (GEP)
+* $\mu$: 期待値
+* $\theta$: 尺度
+* $\mathbf{X}$: デサイン行列
+* $\Gamma(\cdot)$: ガンマ分布
+]
+.pull-right[
+
+* $\beta$: モデル係数
+* $P$, $T$: 光量子量 (P), 水温 (T), 状態 (S), 生態系 (L)
+* $S$: 状態 (S) = {Desertified, Vegetated}
+* $L$: 生態系 (L) = {Sargassum, Zostera}
+]
+
+
+---
+
+## 事前分布
+
+$$
+\begin{aligned}
+\beta &\sim N(0, 1) \\
+\beta_L &\sim N(0, 1) \\
+\sigma &\sim N(0, 1) \\
+\theta &\sim N(0, 1) \\
+\end{aligned}
+$$
+
+---
+## BRMS Model
+
+藻類学会用モデルは階層ベイズではない。階層ベイズモデルも実行したが、ほとんど変わらない。
+
+```{r, eval = FALSE}
+gepmodel  = bf(GEP ~ PPFD * TEMP * state + location) + Gamma("log")
+CTRL = list(adapt_delta = 0.95, max_treedepth = 15)
+
+PRIOR = get_prior(gepmodel, data = dset) %>% 
+  mutate(prior = ifelse(str_detect(class, "b|Intercept|b"), "normal(0, 1)", prior)) %>% 
+  mutate(prior = ifelse(str_detect(class, "sd"), "normal(0, 1)", prior)) %>% 
+  mutate(prior = ifelse(str_detect(class, "shape|sigma"), "normal(0, 1)", prior)) %>% 
+  filter(str_detect(coef, "^s\\(", negate = T))
+
+```
+
+---
+
+
+class: middle, center
+# Multilevel model
+
+## Not ready.
+
+---
+
+## The linear model
 
 $$
 \begin{aligned}
