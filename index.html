@@ -425,11 +425,7 @@ ggplot() +
   geom_errorbar(aes(x = month, ymin = GEP_mean - GEP_se, ymax = GEP_mean + GEP_se,  color = state),
                 width = 0, position = position_dodge(DODGE), data = dset_mean) +
   scale_month +
-<<<<<<< HEAD
-  scale_y_continuous(name = parse(text = ylabel), limits = c(0, 75), breaks = seq(0, 75, by = 25)) + 
-=======
   scale_y_continuous(name = parse(text = ylabel), limits = c(0, 50), breaks = seq(0, 50, by = 10)) + 
->>>>>>> 94ef986baffce3b4f00ec79fb6de87df007f73e8
   scale_color_manual(values = CLRS[c(7,3)], labels = c("Desertified [D]", "Vegetated [V]")) +
   scale_fill_manual(values =  CLRS[c(7,3)], labels = c("Desertified [D]", "Vegetated [V]")) +
   ggpubr::theme_pubr(base_size = FONTSIZE) +
