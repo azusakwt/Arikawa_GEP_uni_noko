@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 ## Arikawa Bay, Nagasaki, Japan
 ### Gregory N. Nishihara
 ### Azusa Kawate
-### Updated 2021-03-11
+### Updated 2021-03-12
 
 ---
 
@@ -144,7 +144,7 @@ class: middle, center
 
 ## 解析前のデータ処理
 
-解析前のデータ処理は　`create_dataset.R` と `prepare_brms_data.R` で行っています。
+解析前のデータ処理は　`create_dataset.R`、`predict_tides.R`、 `prepare_brms_data.R` で行っています。
 
 
 ```r
@@ -233,7 +233,7 @@ $$
 
 
 ```r
-WARMUP  = 1000
+WARMUP  = 1500
 SAMPLES = 2000
 SEED    = 2021
 CHAINS = 4
@@ -244,15 +244,17 @@ CTRL = list(adapt_delta = 0.9995, max_treedepth = 15)
 **重要** Hamiltonian Markov Chain のアルゴリズムの都合により、説明変数の値を同じスケール（範囲）にしています。同じスケールにすると、推定が早くなって収束しやすくなります。
 さらに、GEPを標準水温にあわせています。
 
+
 ```r
 dset = dset %&gt;% 
-  mutate(GEPoriginal = GEP,
-         GEP = GEP / arrhenius(TEMP, 20)) %&gt;% 
+  # mutate(GEPoriginal = GEP, GEP = GEP / arrhenius(TEMP, 20)) %&gt;% 
   mutate(TEMP = TEMP / 30,
          PPFD = PPFD / 60) %&gt;% 
   mutate(location = factor(location),
          state = factor(state))
 ```
+
+**アレニウス式で補正しないほうがいい。補正すると、水温がモデルの左辺と右辺にでてくるので、問題かも。**
 
 ---
 
@@ -261,7 +263,7 @@ dset = dset %&gt;%
 **藻類学会用モデルは階層ベイズではありません。** 
 
 
-**BRMS Forumla**
+**BRMS Formula**
 
 ```r
 gepmodel  = bf(GEP ~ PPFD * TEMP * state * location) + Gamma("log")
@@ -414,17 +416,16 @@ dset_mean = dset_mean %&gt;% filter(str_detect(location, "S"))
 
 
 ```r
-ylabel = "GEP[20]~(g~O[2]~m^{-2}~d^{-1})"
+ylabel = "GEP~(g~O[2]~m^{-2}~d^{-1})"
 
 ggplot() + 
-  geom_ribbon(aes(x = month, ymin = .lower, ymax = .upper, fill = state), data = predictions, alpha = 0.2, position = position_dodge(DODGE)) +
   geom_ribbon(aes(x = month, ymin = .lower, ymax = .upper, fill = state), data = fitted, alpha = 0.4, position = position_dodge(DODGE)) +
   geom_line(aes(x = month, y = .value, color = state), data = fitted, position = position_dodge(DODGE)) +
   geom_point(aes(x = month, y = GEP_mean, color = state), position = position_dodge(DODGE), data = dset_mean) +
   geom_errorbar(aes(x = month, ymin = GEP_mean - GEP_se, ymax = GEP_mean + GEP_se,  color = state),
                 width = 0, position = position_dodge(DODGE), data = dset_mean) +
   scale_month +
-  scale_y_continuous(name = parse(text = ylabel), limits = c(0, 100)) + 
+  scale_y_continuous(name = parse(text = ylabel), limits = c(0, 50), breaks = seq(0, 50, by = 10)) + 
   scale_color_manual(values = CLRS[c(7,3)], labels = c("Desertified [D]", "Vegetated [V]")) +
   scale_fill_manual(values =  CLRS[c(7,3)], labels = c("Desertified [D]", "Vegetated [V]")) +
   ggpubr::theme_pubr(base_size = FONTSIZE) +
@@ -434,8 +435,6 @@ ggplot() +
         legend.background = element_blank(),
         legend.title = element_blank())
 ```
-
-&lt;img src="index_files/figure-html/gepvsmonth-1.png" style="display: block; margin: auto;" /&gt;
 
 ```r
 ggsave("GEPvsMonth.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
@@ -478,7 +477,7 @@ ggplot(dset_vd) +
   geom_line(aes(x = month, y = VD), color = CLRS[2]) +
   scale_month + 
   scale_y_continuous(name = parse(text = ylabel),
-                     limits = c(-10, 20)) + 
+                     limits = c(-10, 21)) + 
   ggpubr::theme_pubr(base_size = FONTSIZE) +
   theme(legend.position = c(0,1),
         legend.justification = c(0,1),
@@ -489,8 +488,6 @@ ggplot(dset_vd) +
         strip.text = element_text(size = 14, color = "white"))
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-26-1.png" style="display: block; margin: auto;" /&gt;
-
 ```r
 ggsave("GEPVDvsMonth.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 ```
@@ -499,7 +496,7 @@ ggsave("GEPVDvsMonth.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm
 
 ## GEP Difference vs month (only Sargassum) 
 
-&lt;img src="GEPVDvsMonth.png" width="1587" style="display: block; margin: auto;" /&gt;
+&lt;img src="GEPVDvsMonth.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -534,28 +531,15 @@ plabel = str_glue("{plabel}~mol~photons~m^{{-2}}~d^{{-1}}")
 
 ```r
 xlabel = "Temperature (°C)"
-ylabel = "GEP[20]~(g~O[2]~m^{-2}~d^{-1})"
+ylabel = "GEP~(g~O[2]~m^{-2}~d^{-1})"
 ggplot() + 
-  geom_line(aes(x = TEMP, y = .value, color = state, linetype = factor(PPFD)), 
-            size = 1,
-            data = fitted_temperature) +
-  geom_point(aes(x = TEMP_mean, y = GEP_mean, color = state),
-             data = dset_mean) +
-  geom_errorbar(aes(x = TEMP_mean, 
-                    ymin = GEP_mean - GEP_se,
-                    ymax = GEP_mean + GEP_se, 
-                    color = state),
-                width = 0,
-                data = dset_mean) +
-  scale_x_continuous(xlabel,
-                     limits =   c(0.4, 1),
-                     breaks = seq(0.4, 1, by  = 0.1),
-                     labels = seq(0.4, 1, by  = 0.1) * 30) +
-  scale_y_continuous(name = parse(text = ylabel),
-                     limits = c(0, 80)) + 
+  geom_line(aes(x = TEMP, y = .value, color = state, linetype = factor(PPFD)), size = 1, data = fitted_temperature) +
+  geom_point(aes(x = TEMP_mean, y = GEP_mean, color = state), data = dset_mean) +
+  geom_errorbar(aes(x = TEMP_mean, ymin = GEP_mean - GEP_se,ymax = GEP_mean + GEP_se,  color = state), width = 0, data = dset_mean) +
+  scale_x_continuous(xlabel, limits =   c(0.4, 1), breaks = seq(0.4, 1, by  = 0.1), labels = seq(0.4, 1, by  = 0.1) * 30) +
+  scale_y_continuous(name = parse(text = ylabel), limits = c(0, 80)) + 
   scale_color_manual(values = CLRS[c(7,3)], labels = c("Desertified [D]", "Vegetated [V]")) +
-  scale_linetype_manual(values = 1:3, 
-                        labels = parse(text = plabel)) +
+  scale_linetype_manual(values = 1:3, labels = parse(text = plabel)) +
   ggpubr::theme_pubr(base_size = FONTSIZE) +
   theme(legend.position = c(0,1),
         legend.justification = c(0,1),
@@ -566,8 +550,6 @@ ggplot() +
         strip.text = element_text(size = 14, color = "white"))
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /&gt;
-
 ```r
 ggsave("GEPvsTemperature.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 ```
@@ -577,7 +559,7 @@ ggsave("GEPvsTemperature.png", width = wh[2], height = wh[1], dpi = DPI, units =
 
 ## GEP vs Temperature (only Sargassum)
 
-&lt;img src="GEPvsTemperature.png" width="1587" style="display: block; margin: auto;" /&gt;
+&lt;img src="GEPvsTemperature.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -593,42 +575,27 @@ ggsave("GEPvsTemperature.png", width = wh[2], height = wh[1], dpi = DPI, units =
 
 ```r
 xlabel = "PPFD~(mol~photons~m^{-2}~d^{-1})"
-ylabel = "GEP[20]~(g~O[2]~m^{-2}~d^{-1})"
+ylabel = "GEP~(g~O[2]~m^{-2}~d^{-1})"
 
 ggplot() + 
-  geom_line(aes(x =   PPFD, y = .value, color = state, 
-                linetype = factor(TEMP)), 
-            size = 1,
-            data = fitted_ppfd) +
-  geom_point(aes(x =  PPFD_mean, y = GEP_mean, color = state),
-             data = dset_mean) +
-  geom_errorbar(aes(x = PPFD_mean, 
-                    ymin = GEP_mean - GEP_se,
-                    ymax = GEP_mean + GEP_se, 
-                    color = state),
-                width = 0,
-                data = dset_mean) +
-  scale_x_continuous(name = parse(text = xlabel),
-                     limits =   c(0.0, 0.3),
+  geom_line(aes(x =   PPFD, y = .value, color = state, linetype = factor(TEMP)),  size = 1, data = fitted_ppfd) +
+  geom_point(aes(x =  PPFD_mean, y = GEP_mean, color = state), data = dset_mean) +
+  geom_errorbar(aes(x = PPFD_mean,  ymin = GEP_mean - GEP_se, ymax = GEP_mean + GEP_se, color = state), width = 0, data = dset_mean) +
+  scale_x_continuous(name = parse(text = xlabel), limits =   c(0.0, 0.3),
                      breaks = seq(0.0, 0.3, by  = 0.1),
                      labels = seq(0.0, 0.3, by  = 0.1) * 60) +
-  scale_y_continuous(name = parse(text = ylabel),
-                     limits = c(0, 80)) + 
+  scale_y_continuous(name = parse(text = ylabel), limits = c(0, 40)) + 
   scale_color_manual(values = CLRS[c(7,3)], labels = c("Desertified [D]", "Vegetated [V]")) +
-  scale_linetype_manual(values = 1:3, 
-                        labels = tlabel) +
+  scale_linetype_manual(values = 1:3,  labels = tlabel) +
   ggpubr::theme_pubr(base_size = FONTSIZE) +
   theme(legend.position = c(0,1),
         legend.justification = c(0,1),
         legend.direction = "horizontal",
         legend.background = element_blank(),
         legend.title = element_blank(),
-        strip.background = element_rect(fill = grey(0, 0.5),
-                                        color = NA),
+        strip.background = element_rect(fill = grey(0, 0.5), color = NA),
         strip.text = element_text(size = 14, color = "white"))
 ```
-
-&lt;img src="index_files/figure-html/unnamed-chunk-32-1.png" style="display: block; margin: auto;" /&gt;
 
 ```r
 ggsave("GEPvsPPFD.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
@@ -638,7 +605,7 @@ ggsave("GEPvsPPFD.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 
 ## GEP vs PPFD (only Sargassum)
 
-&lt;img src="GEPvsPPFD.png" width="1587" style="display: block; margin: auto;" /&gt;
+&lt;img src="GEPvsPPFD.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -649,8 +616,7 @@ ggsave("GEPvsPPFD.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 fitted_state = dset %&gt;% select(state, location) %&gt;% distinct()
 tmp = dset %&gt;% ungroup() %&gt;% 
   group_by(month) %&gt;% 
-  summarise(PPFD = mean(PPFD),
-            TEMP = mean(TEMP))
+  summarise(PPFD = mean(PPFD), TEMP = mean(TEMP))
 
 fitted_state = fitted_state %&gt;% mutate(data = list(tmp))  %&gt;% 
   unnest(data) %&gt;% 
@@ -660,13 +626,10 @@ fitted_state = fitted_state %&gt;% mutate(data = list(tmp))  %&gt;%
   select(-.row) %&gt;% 
   pivot_wider(names_from = state,
               values_from = .value) %&gt;% 
-  mutate(DV = 100*( 1 - Desertified / Vegetated)) %&gt;% 
-  mutate(month = factor(month,
-                        levels = c(6:12, 1:5),
-                        labels = month.abb[c(6:12, 1:5)]))
+  mutate(DV = 100*( 1 - Desertified / Vegetated)) 
 ```
 
---- 
+---
 
 ## GEP Percent decrease (only Sargassum)
 
@@ -674,38 +637,32 @@ fitted_state = fitted_state %&gt;% mutate(data = list(tmp))  %&gt;%
 ```r
 xlabel = "Percent decrease (%)"
 ggplot(fitted_state) + 
-  ggdist::stat_halfeye(aes(x = DV, y = month),
-                       fill = CLRS[3]) +
-  geom_vline(xintercept = 0 , linetype = "dashed",color = "grey")+
-  scale_x_continuous(name = xlabel) +
-  scale_y_discrete("Month") +
-  scale_color_manual("", 
-                     values = CLRS[(c(7,3))]) +
+  ggdist::stat_eye(aes(y = DV, x = month), fill = CLRS[3]) +
+  geom_hline(yintercept = 0 , linetype = "dashed",color = "grey")+
+  scale_month + 
+  scale_y_continuous(name = xlabel) +
+  scale_color_manual("",  values = CLRS[(c(7,3))]) +
   ggpubr::theme_pubr(base_size = FONTSIZE) +
   theme(legend.position = c(0,1),
         legend.justification = c(0,1),
         legend.direction = "horizontal",
         legend.background = element_blank(),
         legend.title = element_blank(),
-        strip.background = element_rect(fill = grey(0, 0.5),
-                                        color = NA),
+        strip.background = element_rect(fill = grey(0, 0.5), color = NA),
         strip.text = element_text(size = 14, color = "white"))
 ```
-
-&lt;img src="index_files/figure-html/unnamed-chunk-35-1.png" style="display: block; margin: auto;" /&gt;
 
 ```r
 ggsave("Percent_decrease.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 ```
 
---- 
+---
 
 ## GEP Percent decrease (only Sargassum)
 
-&lt;img src="Percent_decrease.png" width="1587" style="display: block; margin: auto;" /&gt;
+&lt;img src="Percent_decrease.png" width="90%" style="display: block; margin: auto;" /&gt;
 
---- 
-
+---
 
 
 class: middle, center

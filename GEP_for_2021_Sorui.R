@@ -76,8 +76,7 @@ dset %>% summarise(across(c(TEMP, PPFD), list(min=min, mean=mean, median=median,
 
 ## GEPの水温補正  
 dset = dset %>% 
-  mutate(GEPoriginal = GEP,
-         GEP = GEP / arrhenius(TEMP, 20)) %>% 
+  # mutate(GEPoriginal = GEP, GEP = GEP / arrhenius(TEMP, 20)) %>% 
   mutate(TEMP = TEMP / 30,
          PPFD = PPFD / 60) %>% 
   mutate(location = factor(location),
@@ -229,8 +228,12 @@ CLRS = as.vector(palette.colors(palette = "Okabe-Ito"))
 FONTSIZE = 15
 DODGE = 0.2
 xlabel = "Month"
+scale_month = 
+  scale_x_continuous("Month", limits = c(0.5, 12.5), 
+                     breaks = 1:12,
+                     labels = str_sub(month.abb[c(6:12, 1:5)], 1, 1))
 
-ylabel = "GEP[20]~(g~O[2]~m^{-2}~d^{-1})"
+ylabel = "GEP~(g~O[2]~m^{-2}~d^{-1})"
 ggplot() + 
   geom_ribbon(aes(x = month, ymin = .lower, ymax = .upper, fill = state), data = predictions, alpha = 0.2,
               position = position_dodge(DODGE)) +
@@ -248,12 +251,8 @@ ggplot() +
                 width = 0,
                 position = position_dodge(DODGE),
              data = dset_mean) +
-  scale_x_continuous("Month",
-                     limits = c(0.5, 12.5),
-                     breaks = 1:12,
-                     labels = str_sub(month.abb[c(6:12, 1:5)],1,1)) +
-  scale_y_continuous(name = parse(text = ylabel),
-                     limits = c(0, 100)) + 
+  scale_month +
+  scale_y_continuous(name = parse(text = ylabel), limits = c(0, 50), breaks = seq(0, 50, by = 10)) + 
   scale_color_manual(values = CLRS[c(7,3)], labels = c("Desertified [D]", "Vegetated [V]")) +
   scale_fill_manual(values =  CLRS[c(7,3)], labels = c("Desertified [D]", "Vegetated [V]")) +
   ggpubr::theme_pubr(base_size = FONTSIZE) +
@@ -294,12 +293,9 @@ deltaGEPplot = ggplot(dset_vd) +
   geom_ribbon(aes(x = month, ymin = .lower, ymax = .upper), 
               alpha = 0.2) +
   geom_line(aes(x = month, y = VD)) +
-  scale_x_continuous("Month",
-                     limits = c(0.5, 12.5),
-                     breaks = 1:12,
-                     labels = str_sub(month.abb[c(6:12, 1:5)],1,1)) +
+  scale_month + 
   scale_y_continuous(name = parse(text = ylabel),
-                     limits = c(-25, 50)) + 
+                     limits = c(-10, 21)) + 
   ggpubr::theme_pubr(base_size = FONTSIZE) +
   theme(legend.position = c(0,1),
         legend.justification = c(0,1),
@@ -317,7 +313,7 @@ ggsave("GEPVDvsMonth.png", width = wh[2], height = wh[1], plot = deltaGEPplot, d
 # GEP vs temperature
 
 xlabel = "Temperature (°C)"
-ylabel = "GEP[20]~(g~O[2]~m^{-2}~d^{-1})"
+ylabel = "GEP~(g~O[2]~m^{-2}~d^{-1})"
 
 fitted_temperature = 
   dset_mean %>% ungroup() %>% 
@@ -338,35 +334,23 @@ plabel = fitted_temperature%>% ungroup() %>%  select(PPFD) %>% distinct() %>%
 
 plabel = str_glue("{plabel}~mol~photons~m^{{-2}}~d^{{-1}}")
 
+xlabel = "Temperature (°C)"
+ylabel = "GEP~(g~O[2]~m^{-2}~d^{-1})"
 ggplot() + 
-  geom_line(aes(x = TEMP, y = .value, color = state, linetype = factor(PPFD)), 
-            size = 1,
-            data = fitted_temperature) +
-  geom_point(aes(x = TEMP_mean, y = GEP_mean, color = state),
-             data = dset_mean) +
-  geom_errorbar(aes(x = TEMP_mean, 
-                    ymin = GEP_mean - GEP_se,
-                    ymax = GEP_mean + GEP_se, 
-                    color = state),
-                width = 0,
-                data = dset_mean) +
-  scale_x_continuous(xlabel,
-                     limits =   c(0.4, 1),
-                     breaks = seq(0.4, 1, by  = 0.1),
-                     labels = seq(0.4, 1, by  = 0.1) * 30) +
-  scale_y_continuous(name = parse(text = ylabel),
-                     limits = c(0, 80)) + 
+  geom_line(aes(x = TEMP, y = .value, color = state, linetype = factor(PPFD)), size = 1, data = fitted_temperature) +
+  geom_point(aes(x = TEMP_mean, y = GEP_mean, color = state), data = dset_mean) +
+  geom_errorbar(aes(x = TEMP_mean, ymin = GEP_mean - GEP_se,ymax = GEP_mean + GEP_se,  color = state), width = 0, data = dset_mean) +
+  scale_x_continuous(xlabel, limits =   c(0.4, 1), breaks = seq(0.4, 1, by  = 0.1), labels = seq(0.4, 1, by  = 0.1) * 30) +
+  scale_y_continuous(name = parse(text = ylabel), limits = c(0, 80)) + 
   scale_color_manual(values = CLRS[c(7,3)], labels = c("Desertified [D]", "Vegetated [V]")) +
-  scale_linetype_manual(values = 1:3, 
-                        labels = parse(text = plabel)) +
+  scale_linetype_manual(values = 1:3, labels = parse(text = plabel)) +
   ggpubr::theme_pubr(base_size = FONTSIZE) +
   theme(legend.position = c(0,1),
         legend.justification = c(0,1),
         legend.direction = "horizontal",
         legend.background = element_blank(),
         legend.title = element_blank(),
-        strip.background = element_rect(fill = grey(0, 0.5),
-                                        color = NA),
+        strip.background = element_rect(fill = grey(0, 0.5), color = NA),
         strip.text = element_text(size = 14, color = "white"))
 
 wh = aseries(5);wh
@@ -376,7 +360,7 @@ ggsave("GEPvsTemperature.png", width = wh[2], height = wh[1], dpi = DPI, units =
 # GEP vs PPFD
 
 xlabel = "PPFD~(mol~photons~m^{-2}~d^{-1})"
-ylabel = "GEP[20]~(g~O[2]~m^{-2}~d^{-1})"
+ylabel = "GEP~(g~O[2]~m^{-2}~d^{-1})"
 
 fitted_ppfd = dset_mean %>% ungroup() %>% 
   mutate(PPFD = PPFD_mean, TEMP = TEMP_mean) %>% 
@@ -396,35 +380,22 @@ tlabel = fitted_ppfd %>% ungroup() %>%  select(TEMP) %>% distinct() %>%
 tlabel = str_glue("{tlabel}°C")
 
 ggplot() + 
-  geom_line(aes(x =   PPFD, y = .value, color = state, 
-                linetype = factor(TEMP)), 
-            size = 1,
-            data = fitted_ppfd) +
-  geom_point(aes(x =  PPFD_mean, y = GEP_mean, color = state),
-             data = dset_mean) +
-  geom_errorbar(aes(x = PPFD_mean, 
-                    ymin = GEP_mean - GEP_se,
-                    ymax = GEP_mean + GEP_se, 
-                    color = state),
-                width = 0,
-                data = dset_mean) +
-  scale_x_continuous(name = parse(text = xlabel),
-                     limits =   c(0.0, 0.3),
+  geom_line(aes(x =   PPFD, y = .value, color = state, linetype = factor(TEMP)),  size = 1, data = fitted_ppfd) +
+  geom_point(aes(x =  PPFD_mean, y = GEP_mean, color = state), data = dset_mean) +
+  geom_errorbar(aes(x = PPFD_mean,  ymin = GEP_mean - GEP_se, ymax = GEP_mean + GEP_se, color = state), width = 0, data = dset_mean) +
+  scale_x_continuous(name = parse(text = xlabel), limits =   c(0.0, 0.3),
                      breaks = seq(0.0, 0.3, by  = 0.1),
                      labels = seq(0.0, 0.3, by  = 0.1) * 60) +
-  scale_y_continuous(name = parse(text = ylabel),
-                     limits = c(0, 80)) + 
+  scale_y_continuous(name = parse(text = ylabel), limits = c(0, 40)) + 
   scale_color_manual(values = CLRS[c(7,3)], labels = c("Desertified [D]", "Vegetated [V]")) +
-  scale_linetype_manual(values = 1:3, 
-                        labels = tlabel) +
+  scale_linetype_manual(values = 1:3,  labels = tlabel) +
   ggpubr::theme_pubr(base_size = FONTSIZE) +
   theme(legend.position = c(0,1),
         legend.justification = c(0,1),
         legend.direction = "horizontal",
         legend.background = element_blank(),
         legend.title = element_blank(),
-        strip.background = element_rect(fill = grey(0, 0.5),
-                                        color = NA),
+        strip.background = element_rect(fill = grey(0, 0.5), color = NA),
         strip.text = element_text(size = 14, color = "white"))
 
 wh = aseries(5);wh
@@ -529,6 +500,41 @@ DPI = 300
 ggsave("Difference.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 
 
+
+## GEP Percent decrease (only Sargassum)
+
+fitted_state = dset %>% select(state, location) %>% distinct()
+tmp = dset %>% ungroup() %>% 
+  group_by(month) %>% 
+  summarise(PPFD = mean(PPFD), TEMP = mean(TEMP))
+
+fitted_state = fitted_state %>% mutate(data = list(tmp))  %>% 
+  unnest(data) %>% 
+  add_fitted_draws(bout) %>% 
+  filter(location == "S") %>% 
+  ungroup() %>% 
+  select(-.row) %>% 
+  pivot_wider(names_from = state,
+              values_from = .value) %>% 
+  mutate(DV = 100*( 1 - Desertified / Vegetated)) 
+
+xlabel = "Percent decrease (%)"
+ggplot(fitted_state) + 
+  ggdist::stat_eye(aes(y = DV, x = month), fill = CLRS[3]) +
+  geom_hline(yintercept = 0 , linetype = "dashed",color = "grey")+
+  scale_month + 
+  scale_y_continuous(name = xlabel) +
+  scale_color_manual("",  values = CLRS[(c(7,3))]) +
+  ggpubr::theme_pubr(base_size = FONTSIZE) +
+  theme(legend.position = c(0,1),
+        legend.justification = c(0,1),
+        legend.direction = "horizontal",
+        legend.background = element_blank(),
+        legend.title = element_blank(),
+        strip.background = element_rect(fill = grey(0, 0.5), color = NA),
+        strip.text = element_text(size = 14, color = "white"))
+
+ggsave("Percent_decrease.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 
 
 
