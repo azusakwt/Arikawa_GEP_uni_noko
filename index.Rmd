@@ -148,7 +148,7 @@ class: middle, center
 
 ## 解析前のデータ処理
 
-解析前のデータ処理は　`create_dataset.R` と `prepare_brms_data.R` で行っています。
+解析前のデータ処理は　`create_dataset.R`、`predict_tides.R`、 `prepare_brms_data.R` で行っています。
 
 ```{r}
 dset = read_rds("prepared_brms_data.rds") %>% ungroup() %>% 
@@ -413,11 +413,10 @@ dset_mean = dset_mean %>% filter(str_detect(location, "S"))
 
 ## GEP vs month (only Sargassum)
 
-```{r gepvsmonth, results="hide"}
+```{r gepvsmonth, results="hide", fig.show = "hide"}
 ylabel = "GEP[20]~(g~O[2]~m^{-2}~d^{-1})"
 
 ggplot() + 
-  geom_ribbon(aes(x = month, ymin = .lower, ymax = .upper, fill = state), data = predictions, alpha = 0.2, position = position_dodge(DODGE)) +
   geom_ribbon(aes(x = month, ymin = .lower, ymax = .upper, fill = state), data = fitted, alpha = 0.4, position = position_dodge(DODGE)) +
   geom_line(aes(x = month, y = .value, color = state), data = fitted, position = position_dodge(DODGE)) +
   geom_point(aes(x = month, y = GEP_mean, color = state), position = position_dodge(DODGE), data = dset_mean) +
@@ -465,7 +464,7 @@ dset_vd = dset_mean %>% ungroup() %>%
 
 ## GEP Difference vs month (only Sargassum)
 
-```{r, results="hide"}
+```{r, results="hide", fig.show = "hide"}
 ylabel = "Delta*GEP~(g~O[2]~m^{-2}~d^{-1})"
 ggplot(dset_vd) + 
   geom_hline(yintercept = 0, linetype = "dashed", color = "grey") +
@@ -523,7 +522,7 @@ plabel = str_glue("{plabel}~mol~photons~m^{{-2}}~d^{{-1}}")
 
 ## GEP vs Temperature (only Sargassum)
 
-```{r, results="hide"}
+```{r, results="hide", fig.show = "hide"}
 xlabel = "Temperature (°C)"
 ylabel = "GEP[20]~(g~O[2]~m^{-2}~d^{-1})"
 ggplot() + 
@@ -596,7 +595,7 @@ tlabel = str_glue("{tlabel}°C")
 
 ## GEP vs PPFD (only Sargassum)
 
-```{r, results="hide"}
+```{r, results="hide", fig.show = "hide"}
 xlabel = "PPFD~(mol~photons~m^{-2}~d^{-1})"
 ylabel = "GEP[20]~(g~O[2]~m^{-2}~d^{-1})"
 
@@ -670,11 +669,11 @@ fitted_state = fitted_state %>% mutate(data = list(tmp))  %>%
 
 ```
 
---- 
+---
 
 ## GEP Percent decrease (only Sargassum)
 
-```{r, results="hide"}
+```{r, results="hide", fig.show = "hide"}
 xlabel = "Percent decrease (%)"
 ggplot(fitted_state) + 
   ggdist::stat_halfeye(aes(x = DV, y = month),
@@ -698,7 +697,7 @@ ggsave("Percent_decrease.png", width = wh[2], height = wh[1], dpi = DPI, units =
 
 ```
 
---- 
+---
 
 ## GEP Percent decrease (only Sargassum)
 
@@ -706,8 +705,7 @@ ggsave("Percent_decrease.png", width = wh[2], height = wh[1], dpi = DPI, units =
 knitr::include_graphics("Percent_decrease.png")
 ```
 
---- 
-
+---
 
 
 class: middle, center
