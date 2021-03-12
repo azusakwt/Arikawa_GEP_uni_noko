@@ -69,7 +69,7 @@ aseries(4)
 ################################################################################
 # (1) create_dataset.R 
 # (2) prepare_brms_data.R 
-dset = readRDS("brms_simplemodel_20210308.rds")
+dset = readRDS("prepared_brms_data.rds")
 # dset = dset %>% mutate(PPFD = PPFD * sd_ppfd + mean_ppfd,TEMP = TEMP * sd_temp + mean_temp)
 
 dset %>% summarise(across(c(TEMP, PPFD), list(min=min, mean=mean, median=median, max=max)))
@@ -85,19 +85,19 @@ dset = dset %>%
 
 
 ################################################################################
-WARMUP  = 1000
+WARMUP  = 1500
 SAMPLES = 2000
 SEED    = 2021
 CHAINS = CORES = 4
 
-gepmodel  = bf(GEP ~ PPFD * TEMP * state + location) + Gamma("log")
-CTRL = list(adapt_delta = 0.95, max_treedepth = 15)
+gepmodel  = bf(GEP ~ PPFD * TEMP * state *　location) + Gamma("log")
+CTRL = list(adapt_delta = 0.9995, max_treedepth = 15)
 
-PRIOR = get_prior(gepmodel, data = dset) %>% 
-  mutate(prior = ifelse(str_detect(class, "b|Intercept|b"), "normal(0, 1)", prior)) %>% 
-  mutate(prior = ifelse(str_detect(class, "sd"), "normal(0, 1)", prior)) %>% 
-  mutate(prior = ifelse(str_detect(class, "shape|sigma"), "normal(0, 1)", prior)) %>% 
-  filter(str_detect(coef, "^s\\(", negate = T))
+get_prior(gepmodel, data = dset)
+
+PRIOR = c(prior(normal(0, 1), class = b),
+          prior(normal(0, 1), class = Intercept),
+          prior(normal(0, 1), class = shape))
 
 z1 = lubridate::now()
 bout = brm(gepmodel, 
@@ -110,57 +110,18 @@ bout = brm(gepmodel,
            warmup = WARMUP,
            control = CTRL,
            backend = "cmdstanr",
-           refresh = 100,
+           threads = 4,
+           refresh = 500,
            save_pars = save_pars(all = TRUE))
 z2 = lubridate::now()
-
-write_rds(bout, "brms_simplemodel_20210308.rds")
-
 summary(bout)
-pp_check(bout, nsamples = 50)
-conditional_effects(bout)
-###############################################################
-# Page size functions -----
-aseries = function(n, floor = TRUE) {
-  # Function to calculate ISO216 A Series
-  n = as.integer(n)
-  wodd = function(n) {
-    1 / (2 ^ ((n + 1)/2)) * 1000 * sqrt(sqrt(2))
-  }
-  hodd = function(n) {
-    1 / (2 ^ ((n - 1)/2)) * 1000 / sqrt(sqrt(2))
-  }
-  weven = function(n) {
-    1 / (2 ^ (n / 2)) * 1000 / sqrt(sqrt(2))
-  }
-  heven = function(n) {
-    1 / (2 ^ (n / 2)) * 1000 * sqrt(sqrt(2))
-  }
-  if(n %% 2)  {
-    w = wodd(n)
-    h = hodd(n)
-  } else {
-    w = weven(n)
-    h = heven(n)
-  }
-  if(floor) {return(floor(c(w,h)))}
-  return(c(w,h))
-}
+fixef(bout)
 
-bseries = function(n) {
-  # Function to calculate ISO216 BS Series
-  n = as.integer(n)
-  if(n == 0) {
-    wh = c(1000, 1414)
-  } else {
-    wh  = aseries(n, floor = F)
-    wh2 = aseries(n-1, floor = F)
-    w = sqrt(wh[1] * wh2[1])
-    h = sqrt(wh[2] * wh2[2])
-  }
-  return(floor(c(w,h)))
-}
+write_rds(bout, "brms_simplemodel_20210311.rds")
 
+# pp_check(bout, nsamples = 50)
+
+# conditional_effects(bout)
 
 ###############################################################
 # Read Urchin and Sargassum data ----
@@ -228,8 +189,8 @@ benthos = full_join(urchins, sargassum)
 # dset = readRDS("prepared_brms_data.rds")
 
 # Read BRMS fit ----------------------------------------------------------------
-bout = read_rds("brms_simplemodel_20210308.rds")
-
+bout = read_rds("brms_simplemodel_20210311.rds")
+summary(bout)
 # Make predictions of GEP, PPFD, Temperature -----------------------------------
 
 se = function(x, na.rm = T) {
@@ -292,7 +253,7 @@ ggplot() +
                      breaks = 1:12,
                      labels = str_sub(month.abb[c(6:12, 1:5)],1,1)) +
   scale_y_continuous(name = parse(text = ylabel),
-                     limits = c(0, 80)) + 
+                     limits = c(0, 100)) + 
   scale_color_manual(values = CLRS[c(7,3)], labels = c("Desertified [D]", "Vegetated [V]")) +
   scale_fill_manual(values =  CLRS[c(7,3)], labels = c("Desertified [D]", "Vegetated [V]")) +
   ggpubr::theme_pubr(base_size = FONTSIZE) +
@@ -338,7 +299,7 @@ deltaGEPplot = ggplot(dset_vd) +
                      breaks = 1:12,
                      labels = str_sub(month.abb[c(6:12, 1:5)],1,1)) +
   scale_y_continuous(name = parse(text = ylabel),
-                     limits = c(-10, 20)) + 
+                     limits = c(-25, 50)) + 
   ggpubr::theme_pubr(base_size = FONTSIZE) +
   theme(legend.position = c(0,1),
         legend.justification = c(0,1),
@@ -347,7 +308,7 @@ deltaGEPplot = ggplot(dset_vd) +
         legend.title = element_blank(),
         strip.background = element_rect(fill = grey(0, 0.5),
                                         color = NA),
-        strip.text = element_text(size = 14, color = "white"))
+        strip.text = element_text(size = 14, color = "white")); deltaGEPplot
 
 wh = aseries(5);wh
 DPI = 300
@@ -358,12 +319,13 @@ ggsave("GEPVDvsMonth.png", width = wh[2], height = wh[1], plot = deltaGEPplot, d
 xlabel = "Temperature (°C)"
 ylabel = "GEP[20]~(g~O[2]~m^{-2}~d^{-1})"
 
-fitted_temperature = dset_mean %>% ungroup() %>% 
+fitted_temperature = 
+  dset_mean %>% ungroup() %>% 
   mutate(PPFD = PPFD_mean, TEMP = TEMP_mean) %>% 
   expand(TEMP = seq(min(TEMP), max(TEMP), length = 9),
          PPFD = seq(min(PPFD), max(PPFD), length = 3),
          month, location, state) %>% 
-  add_fitted_draws(bout) %>% ungroup() %>% 
+  add_fitted_draws(bout, allow_new_levels = TRUE) %>% ungroup() %>% 
   group_by(TEMP, PPFD, location, state) %>% 
   mean_hdci(.value)%>% 
   filter(str_detect(location, "S"))
@@ -421,7 +383,7 @@ fitted_ppfd = dset_mean %>% ungroup() %>%
   expand(PPFD = seq(min(PPFD), max(PPFD), length = 9),
          TEMP = seq(min(TEMP), max(TEMP), length = 3),
          month, location, state) %>% 
-  add_fitted_draws(bout) %>% ungroup() %>% 
+  add_fitted_draws(bout, allow_new_levels = TRUE) %>% ungroup() %>% 
   group_by(TEMP, PPFD, location, state) %>% 
   mean_hdci(.value)%>% 
   filter(str_detect(location, "S"))
@@ -469,45 +431,41 @@ wh = aseries(5);wh
 DPI = 300
 ggsave("GEPvsPPFD.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 
+
 # GEP vs state
 
+# This uses the expectation
+# conditional_effects(bout, "state:location")
 
-
-dset_state = dset %>% 
-  select(location, state, PPFD, TEMP, GEP, month) %>% 
-  group_by(location, state) %>% 
-  summarise(GEP_se = se(GEP), 
-            GEP = mean(GEP)) %>% 
-  filter(str_detect(location, "S"))
-
-
-fitted_state = bout %>% 
-  spread_draws(b_Intercept, b_stateVegetated) %>% 
-  mutate(Desertified = b_Intercept,
-         Vegetated = b_Intercept + b_stateVegetated) %>% 
-  select(Desertified, Vegetated) %>% 
-  mutate(VD = 1  - exp(Desertified) / exp(Vegetated)) %>% 
-  mean_hdci(VD)
-
+fitted_state = bout$data %>% 
+  expand(PPFD = mean(PPFD),
+         TEMP = mean(TEMP),
+         GEP = mean(GEP),
+         state = unique(state), 
+         location = unique(location)) %>% 
+  add_fitted_draws(bout) %>% 
+  filter(location == "S") %>% 
+  group_by(state, location) %>%  
+  summarise(fit = mean(.value),
+            sd = sd(.value)) %>% 
+  mutate(lower = fit - sd,
+         upper = fit + sd)
+fitted_state
+  
 xlabel = "State"
 ylabel = "GEP[20]~(g~O[2]~m^{-2}~d^{-1})"
-fitted_state = fitted_state %>% mutate(x= "")
-diffplot = ggplot() + 
-  geom_point(aes(x =  x, y = VD),
-             size = 5,
-             data = fitted_state) +
-  geom_errorbar(aes(x = x, 
-                    ymin = .lower,
-                    ymax = .upper),
-                width = 0,
-                data = fitted_state) +
-  scale_x_discrete(name = "") +
-  scale_y_continuous(name = "Percent difference (%)",
-                     limits = c(0, 1),
-                     breaks = seq(0, 1, by = 0.25),
-                     labels = seq(0, 1, by = 0.25) * 100) + 
+
+fitted_state %>% 
+ggplot() + 
+  geom_pointrange(aes(x =  state, y = fit, 
+                      ymin = lower, ymax = upper,
+                 color = state)) +
+  scale_x_discrete(name = "State") +
+  scale_y_continuous(name = parse(text = ylabel),
+                     limits = c(20, 23)) + 
+  scale_color_manual("", 
+                     values = CLRS[(c(7,3))]) +
   ggpubr::theme_pubr(base_size = FONTSIZE) +
-  coord_flip() +
   theme(legend.position = c(0,1),
         legend.justification = c(0,1),
         legend.direction = "horizontal",
@@ -515,21 +473,60 @@ diffplot = ggplot() +
         legend.title = element_blank(),
         strip.background = element_rect(fill = grey(0, 0.5),
                                         color = NA),
-        strip.text = element_text(size = 14, color = "white") ,
-        plot.background = element_rect(color = "grey", fill = NA),
-        axis.line.y = element_blank(),
-        axis.ticks.y = element_blank())
-
-deltaGEPplot + inset_element(diffplot, 
-                             left = 0.5, 
-                             bottom = 0.05, 
-                             right = 1, 
-                             top = 0.3)
+        strip.text = element_text(size = 14, color = "white"))
 
 wh = aseries(5);wh
 DPI = 300
 ggsave("GEPvsState.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 
+# GEP vs state
+
+# This uses the expectation
+# conditional_effects(bout, "state:location")
+
+
+fitted_state = dset %>% select(state, location) %>% distinct()
+tmp = dset %>% ungroup() %>% 
+  group_by(month) %>% 
+  summarise(PPFD = mean(PPFD),
+            TEMP = mean(TEMP))
+
+fitted_state = fitted_state %>% mutate(data = list(tmp))  %>% 
+  unnest(data) %>% 
+  add_fitted_draws(bout) %>% 
+  filter(location == "S") %>% 
+  ungroup() %>% 
+  select(-.row) %>% 
+  pivot_wider(names_from = state,
+              values_from = .value) %>% 
+ mutate(DV = 100*( 1 - Desertified / Vegetated) )
+
+
+xlabel = "Percent decrease (%)"
+fitted_state %>% mutate(month = factor(month,
+                                       levels = c(6:12, 1:5),
+                                       labels = month.abb[c(6:12, 1:5)])) %>% 
+ggplot() + 
+  ggdist::stat_halfeye(aes(x = DV, y = month),
+                       fill = CLRS[3]) +
+  geom_vline(xintercept = 0 , linetype = "dashed",color = "grey")+
+  scale_x_continuous(name = xlabel) +
+  scale_y_discrete("Month") +
+  scale_color_manual("", 
+                     values = CLRS[(c(7,3))]) +
+  ggpubr::theme_pubr(base_size = FONTSIZE) +
+  theme(legend.position = c(0,1),
+        legend.justification = c(0,1),
+        legend.direction = "horizontal",
+        legend.background = element_blank(),
+        legend.title = element_blank(),
+        strip.background = element_rect(fill = grey(0, 0.5),
+                                        color = NA),
+        strip.text = element_text(size = 14, color = "white"))
+
+wh = aseries(5);wh
+DPI = 300
+ggsave("Difference.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 
 
 

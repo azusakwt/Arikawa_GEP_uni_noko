@@ -127,7 +127,7 @@ dset = dset %>%
 
 
 # Read BRMS fit ----------------------------------------------------------------
-bout = readRDS("bout_hierarchical.rds")
+bout = readRDS("bout_hierarchical_final_20210308.rds")
 
 summary(bout)
 
@@ -240,7 +240,7 @@ p1 = ggplot() +
 
 wh = aseries(5);wh
 DPI = 300
-ggsave("GEP_plot.png", plot = p1, width = wh[2], height = wh[1], dpi = DPI, units = "mm")
+ggsave("GEP_plot_multilevel.png", plot = p1, width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 ################################################################################
 
 
@@ -366,7 +366,7 @@ p21 = cowplot::plot_grid(p1,p2,align = "hv",
 
 wh = aseries(5);wh
 DPI = 300
-ggsave("GEP_dGEP_plot.png", plot = p21, width = wh[2], height = wh[1], dpi = DPI, units = "mm")
+ggsave("GEP_dGEP_plot_multilevel.png", plot = p21, width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 
 
 ################################################################################
@@ -405,7 +405,7 @@ p21b = cowplot::plot_grid(p1,p2b,align = "hv",
 
 wh = aseries(5);wh
 DPI = 300
-ggsave("GEP_pGEP_plot.png", plot = p21b, width = wh[2], height = wh[1], dpi = DPI, units = "mm")
+ggsave("GEP_pGEP_plot_multilevel.png", plot = p21b, width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 
 
 ################################################################################
@@ -477,7 +477,7 @@ p4 = ggplot() +
 p43 = cowplot::plot_grid(p4,p3,align = "hv", ncol = 1, axis = "tblhr")
 wh = aseries(5);wh
 DPI = 300
-ggsave("dPPFD_dTEMP_plot.png", plot = p43, width = wh[2], height = wh[1], dpi = DPI, units = "mm")
+ggsave("dPPFD_dTEMP_plot_multilevel.png", plot = p43, width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 
 ################################################################################
 # Temperature and PPFD ---------------------------------------------------------
@@ -557,7 +557,7 @@ p6 = ggplot(rescaled) +
 p65 = cowplot::plot_grid(p5,p6,align = "hv", ncol = 1, axis = "tblhr")
 wh = aseries(5);wh
 DPI = 300
-ggsave("PPFD_TEMP_plot.png", plot = p65, width = wh[2], height = wh[1], dpi = DPI, units = "mm")
+ggsave("PPFD_TEMP_plot_multilevel.png", plot = p65, width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 
 
 
@@ -616,7 +616,7 @@ p7 = ggplot(cfs) +
 
 wh = aseries(5);wh
 DPI = 300
-ggsave("Population_coefficients.png", plot = p7, width = wh[2], height = wh[1], dpi = DPI, units = "mm")
+ggsave("Population_coefficients_multilevel.png", plot = p7, width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 
 ################################################################################
 
@@ -654,7 +654,7 @@ p8 =
 
 wh = aseries(5);wh
 DPI = 300
-ggsave("Posterior_difference_intercept.png", plot = p8, width = wh[2], height = wh[1], dpi = DPI, units = "mm")
+ggsave("Posterior_difference_intercept_multilevel.png", plot = p8, width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 
 
 
@@ -708,7 +708,7 @@ p9 = cfs3 %>%
 
 wh = aseries(5);wh
 DPI = 300
-ggsave("Percent_difference_intercept.png", plot = p9, width = wh[2], height = wh[1], dpi = DPI, units = "mm")
+ggsave("Percent_difference_intercept_multilevel.png", plot = p9, width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 
 
 
