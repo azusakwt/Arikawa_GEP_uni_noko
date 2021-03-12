@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 ## Arikawa Bay, Nagasaki, Japan
 ### Gregory N. Nishihara
 ### Azusa Kawate
-### Updated 2021-03-11
+### Updated 2021-03-12
 
 ---
 
@@ -144,7 +144,7 @@ class: middle, center
 
 ## 解析前のデータ処理
 
-解析前のデータ処理は　`create_dataset.R` と `prepare_brms_data.R` で行っています。
+解析前のデータ処理は　`create_dataset.R`、`predict_tides.R`、 `prepare_brms_data.R` で行っています。
 
 
 ```r
@@ -233,7 +233,7 @@ $$
 
 
 ```r
-WARMUP  = 1000
+WARMUP  = 1500
 SAMPLES = 2000
 SEED    = 2021
 CHAINS = 4
@@ -261,7 +261,7 @@ dset = dset %&gt;%
 **藻類学会用モデルは階層ベイズではありません。** 
 
 
-**BRMS Forumla**
+**BRMS Formula**
 
 ```r
 gepmodel  = bf(GEP ~ PPFD * TEMP * state * location) + Gamma("log")
@@ -417,14 +417,13 @@ dset_mean = dset_mean %&gt;% filter(str_detect(location, "S"))
 ylabel = "GEP[20]~(g~O[2]~m^{-2}~d^{-1})"
 
 ggplot() + 
-  geom_ribbon(aes(x = month, ymin = .lower, ymax = .upper, fill = state), data = predictions, alpha = 0.2, position = position_dodge(DODGE)) +
   geom_ribbon(aes(x = month, ymin = .lower, ymax = .upper, fill = state), data = fitted, alpha = 0.4, position = position_dodge(DODGE)) +
   geom_line(aes(x = month, y = .value, color = state), data = fitted, position = position_dodge(DODGE)) +
   geom_point(aes(x = month, y = GEP_mean, color = state), position = position_dodge(DODGE), data = dset_mean) +
   geom_errorbar(aes(x = month, ymin = GEP_mean - GEP_se, ymax = GEP_mean + GEP_se,  color = state),
                 width = 0, position = position_dodge(DODGE), data = dset_mean) +
   scale_month +
-  scale_y_continuous(name = parse(text = ylabel), limits = c(0, 100)) + 
+  scale_y_continuous(name = parse(text = ylabel), limits = c(0, 75), breaks = seq(0, 75, by = 25)) + 
   scale_color_manual(values = CLRS[c(7,3)], labels = c("Desertified [D]", "Vegetated [V]")) +
   scale_fill_manual(values =  CLRS[c(7,3)], labels = c("Desertified [D]", "Vegetated [V]")) +
   ggpubr::theme_pubr(base_size = FONTSIZE) +
@@ -434,8 +433,6 @@ ggplot() +
         legend.background = element_blank(),
         legend.title = element_blank())
 ```
-
-&lt;img src="index_files/figure-html/gepvsmonth-1.png" style="display: block; margin: auto;" /&gt;
 
 ```r
 ggsave("GEPvsMonth.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
@@ -489,8 +486,6 @@ ggplot(dset_vd) +
         strip.text = element_text(size = 14, color = "white"))
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-26-1.png" style="display: block; margin: auto;" /&gt;
-
 ```r
 ggsave("GEPVDvsMonth.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 ```
@@ -499,7 +494,7 @@ ggsave("GEPVDvsMonth.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm
 
 ## GEP Difference vs month (only Sargassum) 
 
-&lt;img src="GEPVDvsMonth.png" width="1587" style="display: block; margin: auto;" /&gt;
+&lt;img src="GEPVDvsMonth.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -566,8 +561,6 @@ ggplot() +
         strip.text = element_text(size = 14, color = "white"))
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /&gt;
-
 ```r
 ggsave("GEPvsTemperature.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 ```
@@ -577,7 +570,7 @@ ggsave("GEPvsTemperature.png", width = wh[2], height = wh[1], dpi = DPI, units =
 
 ## GEP vs Temperature (only Sargassum)
 
-&lt;img src="GEPvsTemperature.png" width="1587" style="display: block; margin: auto;" /&gt;
+&lt;img src="GEPvsTemperature.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -628,8 +621,6 @@ ggplot() +
         strip.text = element_text(size = 14, color = "white"))
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-32-1.png" style="display: block; margin: auto;" /&gt;
-
 ```r
 ggsave("GEPvsPPFD.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 ```
@@ -638,7 +629,7 @@ ggsave("GEPvsPPFD.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 
 ## GEP vs PPFD (only Sargassum)
 
-&lt;img src="GEPvsPPFD.png" width="1587" style="display: block; margin: auto;" /&gt;
+&lt;img src="GEPvsPPFD.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -666,7 +657,7 @@ fitted_state = fitted_state %&gt;% mutate(data = list(tmp))  %&gt;%
                         labels = month.abb[c(6:12, 1:5)]))
 ```
 
---- 
+---
 
 ## GEP Percent decrease (only Sargassum)
 
@@ -692,20 +683,17 @@ ggplot(fitted_state) +
         strip.text = element_text(size = 14, color = "white"))
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-35-1.png" style="display: block; margin: auto;" /&gt;
-
 ```r
 ggsave("Percent_decrease.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 ```
 
---- 
+---
 
 ## GEP Percent decrease (only Sargassum)
 
-&lt;img src="Percent_decrease.png" width="1587" style="display: block; margin: auto;" /&gt;
+&lt;img src="Percent_decrease.png" width="90%" style="display: block; margin: auto;" /&gt;
 
---- 
-
+---
 
 
 class: middle, center
