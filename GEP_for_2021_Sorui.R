@@ -477,7 +477,7 @@ GEPperYEAR =
 
 GEPperYEAR %>% 
   group_by(location, state) %>% 
-  mean_hdci(.value)
+  mean_hdci(.value) 
 
 GEPperYEAR %>% 
   select(-.draw, -N) %>% 
@@ -487,6 +487,16 @@ GEPperYEAR %>%
   group_by(location) %>% 
   mean_hdci(.value)
 
+#####
+dset %>% 
+  add_fitted_draws(bout) %>% ungroup() %>% 
+  select(location, state, month, .row, .draw, .value) %>% 
+  mutate(monthtrue =ifelse(month <= 7, month + 5, month - 7)) %>%
+  mutate(season = ifelse(monthtrue %in% c(3,4,5,6), "spring", "other")) %>% 
+  group_by(location, state, season) %>% 
+  summarise(GEPmean = mean(.value))
+  
+#######
 xlabel = "GEP~(kg~O[2]~m^{-2}~yr^{-1})"
 ggplot(GEPperYEAR %>% filter(location == "S")) + 
   ggdist::stat_halfeye(aes(y = state, x = .value/1000), fill = CLRS[3]) +
@@ -506,6 +516,8 @@ ggplot(GEPperYEAR %>% filter(location == "S")) +
 wh = aseries(5);wh
 DPI = 300
 ggsave("Yearly_GEP.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
+
+
 
 ##########################
 
