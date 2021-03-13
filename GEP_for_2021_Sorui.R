@@ -234,7 +234,7 @@ scale_month =
                      labels = str_sub(month.abb[c(6:12, 1:5)], 1, 1))
 
 ylabel = "GEP~(g~O[2]~m^{-2}~d^{-1})"
-ggplot() + 
+plot_gep = ggplot() + 
   geom_ribbon(aes(x = month, ymin = .lower, ymax = .upper, fill = state), data = predictions, alpha = 0.2,
               position = position_dodge(DODGE)) +
   geom_ribbon(aes(x = month, ymin = .lower, ymax = .upper, fill = state), data = fitted, alpha = 0.4,
@@ -538,18 +538,91 @@ ggsave("Percent_decrease.png", width = wh[2], height = wh[1], dpi = DPI, units =
 
 
 
+##########################
+
+##### environment row data
+# for Sorui-gakkai
+
+dset = readRDS("prepared_brms_data.rds")
+dset = dset %>% filter(str_detect(location, "S"))
+
+CLRS = as.vector(palette.colors(palette = "Okabe-Ito"))
+FONTSIZE = 15
+DODGE = 0.2
+xlabel = "Month"
+scale_month = 
+  scale_x_continuous("Month", limits = c(0.5, 12.5), 
+                     breaks = 1:12,
+                     labels = str_sub(month.abb[c(6:12, 1:5)], 1, 1))
+
+
+# temperature
+ylabel = "Temperature (°C)"
+
+plotT = ggplot(dset, aes(x = month, y = TEMP, color = state)) + 
+  geom_smooth(aes(color = state), 
+              formula = y ~ s(x, bs = "cs", k = 6),
+              method.args = list(knots = list(month = c(0.5, 12.5))),
+              method = "gam") +
+  stat_summary(geom = "pointrange",
+               fun.data = "mean_ci",
+               position = position_dodge(0.1))+
+  scale_month +
+  scale_y_continuous(name = ylabel,
+                     limits = c(10, 30), breaks = seq(10, 30, by = 10)) +
+  scale_color_manual(values = CLRS[c(7,3)],
+                     labels = c("Desertified [D]", "Vegetated [V]")) +
+  scale_fill_manual(values =  CLRS[c(7,3)],
+                    labels = c("Desertified [D]", "Vegetated [V]")) +
+  ggpubr::theme_pubr(base_size = FONTSIZE) +
+  theme(legend.position = "none",
+        # legend.justification = c(0,1),
+        # legend.direction = "horizontal",
+        # legend.background = element_blank(),
+        # legend.title = element_blank(),
+        strip.background = element_rect(fill = grey(0, 0.5),
+                                        color = NA),
+        strip.text = element_text(size = 14, color = "white"))
+
+wh = aseries(5);wh
+DPI = 300
+ggsave(plot = plotT, "Temperature.png", 
+       width = wh[2], height = wh[1], dpi = DPI, units = "mm")
+
+# PPFD
+ylabel = "PPFD~(mol~photons~m^{-2}~d^{-1})"
+
+plotP = ggplot(dset, aes(x = month, y = PPFD, color = state)) + 
+  geom_smooth(aes(color = state), 
+              formula = y ~ s(x, bs = "cs", k = 6),
+              method.args = list(knots = list(month = c(0.5, 12.5)),
+                                 family = Gamma("log")),
+              method = "gam") +
+  stat_summary(geom = "pointrange",
+               fun.data = "mean_ci",
+               position = position_dodge(0.1)) +
+  scale_month +
+  scale_y_continuous(name = parse(text = ylabel),
+                     limits = c(0, 25), breaks = seq(0, 25, by = 10)) +
+  scale_color_manual(values = CLRS[c(7,3)],
+                     labels = c("Desertified [D]", "Vegetated [V]")) +
+  scale_fill_manual(values =  CLRS[c(7,3)], 
+                    labels = c("Desertified [D]", "Vegetated [V]")) +
+  ggpubr::theme_pubr(base_size = FONTSIZE) +
+  theme(legend.position = c(0,1),
+        legend.justification = c(0,1),
+        legend.direction = "horizontal",
+        legend.background = element_blank(),
+        legend.title = element_blank(),
+        strip.background = element_rect(fill = grey(0, 0.5),
+                                        color = NA),
+        strip.text = element_text(size = 14, color = "white"))
+# 
+wh = aseries(5);wh
+DPI = 300
+ggsave("PPFD.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+plotTP = cowplot::plot_grid(plotT, plotP, ncol = 2, align = "hv")
+ggsave(plot = plotTP, "Temp_PPFD.png", width = 200, height = 105, dpi = DPI, units = "mm")
