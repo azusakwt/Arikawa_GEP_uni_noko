@@ -820,9 +820,21 @@ molperyear = fitted_state %>%
   mutate(.value = .value * days_in_month) %>% # mol / m2 / month
   ungroup() %>% 
   group_by(state, location, .draw) %>% 
-  summarise(GEP = sum(.value) / length(.value) * 12)
-  
-  
+  summarise(N = length(.value) , 
+            GEP = sum(.value)) %>% 
+  mutate(GEP = 12 * GEP / 11) %>% 
+  select(-N, -.draw) %>% 
+  print()
+
+
+molperyear %>% 
+  pivot_wider(names_from = state,
+              values_from = GEP,
+              values_fn = list) %>% 
+  unnest(everything()) %>% 
+  mutate(perDecrease = 100*(1 - Desertified/Vegetated)) %>% 
+  group_by(location) %>% 
+  mean_hdci(perDecrease)
   
   
 molperyear %>% 
@@ -843,6 +855,6 @@ molperyear %>%
         strip.background = element_rect(fill = grey(0, 0.5), color = NA),
         strip.text = element_text(size = 14, color = "white"))
 
-ggsave("mmol_gep.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
+ggsave("Annual_GEP.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 
 
