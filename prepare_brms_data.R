@@ -9,7 +9,7 @@ library(lubridate)
 library(gnnlab)
 library(readxl)
 library(ggpubr)
-library(furrr)
+library(furrr) 
 ###############################################################
 # make figure---------------
 sargassum = read_csv("~/Lab_Data/kamigotoR2/sargassum/sargassum.csv")

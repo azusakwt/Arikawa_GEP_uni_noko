@@ -119,7 +119,6 @@ sargassum = sargassum %>% mutate(type = "Sargassum macrocarpum")
 benthos = full_join(urchins, sargassum)
 
 dset = readRDS("prepared_brms_data.rds")
-dset = dset %>% mutate(PPFD = PPFD * sd_ppfd + mean_ppfd,TEMP = TEMP * sd_temp + mean_temp)
 
 dset = dset %>%
   mutate(location = factor(location, levels = c("S", "Z"),
@@ -127,7 +126,7 @@ dset = dset %>%
 
 
 # Read BRMS fit ----------------------------------------------------------------
-bout = readRDS("bout_hierarchical_final_20210308.rds")
+bout = readRDS("bout_hierarchical_final_20210312.rds")
 
 summary(bout)
 
@@ -657,8 +656,6 @@ DPI = 300
 ggsave("Posterior_difference_intercept_multilevel.png", plot = p8, width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 
 
-
-
 ################################################################################
 
 cfs3 = 
@@ -717,5 +714,147 @@ ggsave("Percent_difference_intercept_multilevel.png", plot = p9, width = wh[2], 
 
 
 
+fitted_state = dset %>% 
+  mutate(location = str_sub(location, 1, 1)) %>% 
+  mutate(location = factor(location))
+
+fitted_state = fitted_state %>% 
+  add_fitted_draws(bout, allow_new_levels = TRUE) %>% 
+  filter(str_detect(.category, "GEP", negate = T))
+
+fitted_state = fitted_state %>% ungroup() %>% 
+  group_by(state, location, month, .category) %>% 
+  summarise(value = mean(.value))
+
+fitted_state = fitted_state %>% 
+  pivot_wider(names_from = .category, values_from = value) %>% ungroup()
+  
+
+fitted_state = 
+  fitted_state %>%
+  add_fitted_draws(bout, allow_new_levels = TRUE) %>% 
+  ungroup() %>% 
+  filter(str_detect(.category, "GEP")) %>% 
+  select(location, month, state, .value) %>% 
+  pivot_wider(names_from = state,
+              values_from = .value,
+              values_fn = list) %>% 
+  unnest(everything()) %>% 
+  mutate(DV = 100*( 1 - Desertified / Vegetated)) %>% drop_na()
+
+fitted_state %>% 
+  group_by(location, month) %>% 
+  summarise(across(c(Desertified, Vegetated, DV), mean)) %>% 
+  print(n = Inf)
+
+xlabel = "Percent decrease (%)"
+ggplot(fitted_state) + 
+  ggdist::stat_eye(aes(y = DV, x = month)) +
+  geom_hline(yintercept = 0 , linetype = "dashed", color = "grey")+
+  ggpubr::theme_pubr() +
+  facet_grid(rows = vars(location)) +
+  theme(legend.position = c(0,1),
+        legend.justification = c(0,1),
+        legend.direction = "horizontal",
+        legend.background = element_blank(),
+        legend.title = element_blank(),
+        strip.background = element_rect(fill = grey(0, 0.5), color = NA),
+        strip.text = element_text(size = 14, color = "white"))
+
+
+fitted_state %>% select(-DV) %>% 
+  pivot_longer(cols = c(Desertified, Vegetated)) %>% 
+  ggplot() + 
+  ggdist::stat_eye(aes(y = value, x = month, fill = name), 
+                   color = "grey",
+                   size = 0.5, position = position_dodge(0.5)) +
+  geom_hline(yintercept = 0 , linetype = "dashed",color = "grey")+
+  scale_fill_manual(values = viridis::viridis(3)) +
+  scale_y_continuous(parse(text = "GEP~(g~O[2]~m^{-2}~d^{-1})")) +
+  scale_x_continuous("Month",
+                     limits = c(0.5, 12.5),
+                     breaks = 1:12,
+                     labels = str_sub(month.abb[c(6:12, 1:5)],1,1)) +
+  scale_color_manual(values = viridis::viridis(3)) +
+  ggpubr::theme_pubr() +
+  facet_grid(rows = vars(location)) +
+  theme(legend.position = c(0,1),
+        legend.justification = c(0,1),
+        legend.direction = "horizontal",
+        legend.background = element_blank(),
+        legend.title = element_blank(),
+        strip.background = element_rect(fill = grey(0, 0.5), color = NA),
+        strip.text = element_text(size = 14, color = "white"))
+
+ggsave("Percent_decrease.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
+
+
+# Compare with Champenois and Borges 
+# Table 2
+# GPP ranged from 61 to 96 mol O2 / m2 / year 
+# or 1952 to 3072 g O2 / m2 / year
+
+fitted_state = dset %>% 
+  mutate(location = str_sub(location, 1, 1)) %>% 
+  mutate(location = factor(location))
+
+fitted_state = fitted_state %>% 
+  add_fitted_draws(bout, allow_new_levels = TRUE) %>% 
+  filter(str_detect(.category, "GEP", negate = T))
+
+fitted_state = fitted_state %>% ungroup() %>% 
+  group_by(state, location, month, .category) %>% 
+  summarise(value = mean(.value))
+
+fitted_state = fitted_state %>% 
+  pivot_wider(names_from = .category, values_from = value) %>% ungroup()
+
+
+molperyear = fitted_state %>%
+  add_fitted_draws(bout, allow_new_levels = TRUE) %>% 
+  ungroup() %>% 
+  filter(str_detect(.category, "GEP")) %>% 
+  mutate(.value = .value / 32) %>%  # Convert from g to mol
+  mutate(monthtrue =ifelse(month <= 7, month + 5, month - 7)) %>% 
+  mutate(days_in_month = days_in_month(monthtrue)) %>% 
+  mutate(.value = .value * days_in_month) %>% # mol / m2 / month
+  ungroup() %>% 
+  group_by(state, location, .draw) %>% 
+  summarise(N = length(.value) , 
+            GEP = sum(.value)) %>% 
+  mutate(GEP = 12 * GEP / 11) %>% 
+  select(-N, -.draw) %>% 
+  print()
+
+
+molperyear %>% 
+  pivot_wider(names_from = state,
+              values_from = GEP,
+              values_fn = list) %>% 
+  unnest(everything()) %>% 
+  mutate(perDecrease = 100*(1 - Desertified/Vegetated)) %>% 
+  group_by(location) %>% 
+  mean_hdci(perDecrease)
+  
+  
+molperyear %>% 
+  ggplot() + 
+  ggdist::stat_eye(aes(y = GEP, x = location, fill = state), 
+                   color = "grey",
+                   size = 0.5, position = position_dodge(0.5)) +
+  scale_fill_manual(values = viridis::viridis(3)) +
+  scale_y_continuous(parse(text = "GEP~(mol~O[2]~m^{-2}~yr^{-1})")) +
+  scale_x_discrete("Ecosystem") +
+  scale_color_manual(values = viridis::viridis(3)) +
+  ggpubr::theme_pubr() +
+  theme(legend.position = c(0,1),
+        legend.justification = c(0,1),
+        legend.direction = "horizontal",
+        legend.background = element_blank(),
+        legend.title = element_blank(),
+        strip.background = element_rect(fill = grey(0, 0.5), color = NA),
+        strip.text = element_text(size = 14, color = "white"))
+
+ggsave("Annual_GEP.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 
 
