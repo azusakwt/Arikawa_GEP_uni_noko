@@ -201,7 +201,7 @@ dset_mean = dset %>%
   select(location, state, PPFD, TEMP, GEP, month) %>% 
   group_by(location, state, month) %>% 
   summarise(across(c(PPFD, TEMP, GEP), list(mean = mean, se = se)))
-  
+
 
 # 予測区間
 predictions = dset_mean %>% 
@@ -227,6 +227,9 @@ dset_mean = dset_mean %>%
 CLRS = as.vector(palette.colors(palette = "Okabe-Ito"))
 FONTSIZE = 15
 DODGE = 0.2
+
+
+
 xlabel = "Month"
 scale_month = 
   scale_x_continuous("Month", limits = c(0.5, 12.5), 
@@ -250,7 +253,7 @@ ggplot() +
                     color = state),
                 width = 0,
                 position = position_dodge(DODGE),
-             data = dset_mean) +
+                data = dset_mean) +
   scale_month +
   scale_y_continuous(name = parse(text = ylabel), limits = c(0, 50), breaks = seq(0, 50, by = 10)) + 
   scale_color_manual(values = CLRS[c(7,3)], labels = c("Desertified [D]", "Vegetated [V]")) +
@@ -285,7 +288,7 @@ dset_vd = dset_mean %>% ungroup() %>%
   mutate(VD = Vegetated - Desertified) %>% 
   group_by(month) %>% 
   mean_hdci(VD)
-  
+
 ylabel = "Delta*GEP~(g~O[2]~m^{-2}~d^{-1})"
 
 deltaGEPplot = ggplot(dset_vd) + 
@@ -422,15 +425,15 @@ fitted_state = bout$data %>%
   mutate(lower = fit - sd,
          upper = fit + sd)
 fitted_state
-  
+
 xlabel = "State"
 ylabel = "GEP[20]~(g~O[2]~m^{-2}~d^{-1})"
 
 fitted_state %>% 
-ggplot() + 
+  ggplot() + 
   geom_pointrange(aes(x =  state, y = fit, 
                       ymin = lower, ymax = upper,
-                 color = state)) +
+                      color = state)) +
   scale_x_discrete(name = "State") +
   scale_y_continuous(name = parse(text = ylabel),
                      limits = c(20, 23)) + 
@@ -453,38 +456,43 @@ ggsave("GEPvsState.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 # GEP vs state
 
 # This uses the expectation
-# conditional_effects(bout, "state:location")
+ 
+dset = readRDS("prepared_brms_data.rds")
+dset = dset %>% 
+  mutate(TEMP = TEMP / 30, PPFD = PPFD / 60) %>% 
+  mutate(location = factor(location), state = factor(state)) 
 
-
-fitted_state = dset %>% select(state, location) %>% distinct()
-tmp = dset %>% ungroup() %>% 
-  group_by(month) %>% 
-  summarise(PPFD = mean(PPFD),
-            TEMP = mean(TEMP))
-
-fitted_state = fitted_state %>% mutate(data = list(tmp))  %>% 
-  unnest(data) %>% 
-  add_fitted_draws(bout) %>% 
-  filter(location == "S") %>% 
+GEPperYEAR = 
+  dset %>% 
+  add_fitted_draws(bout) %>% ungroup() %>% 
+  select(location, state, month, .row, .draw, .value) %>% 
+  mutate(monthtrue =ifelse(month <= 7, month + 5, month - 7)) %>% 
+  mutate(days_in_month = days_in_month(monthtrue)) %>% 
+  mutate(.value = .value * days_in_month) %>% # g / m2 / month
+  group_by(location, state, month, .draw) %>% summarise(.value = mean(.value)) %>% 
+  group_by(location, state, .draw)        %>% summarise(N = length(month), .value = sum(.value)) %>% 
   ungroup() %>% 
-  select(-.row) %>% 
-  pivot_wider(names_from = state,
-              values_from = .value) %>% 
- mutate(DV = 100*( 1 - Desertified / Vegetated) )
+  group_by(location, state) %>% 
+  mutate(.value = .value * 12 / N ) # g / m2 / year
 
+GEPperYEAR %>% 
+  group_by(location, state) %>% 
+  mean_hdci(.value)
 
-xlabel = "Percent decrease (%)"
-fitted_state %>% mutate(month = factor(month,
-                                       levels = c(6:12, 1:5),
-                                       labels = month.abb[c(6:12, 1:5)])) %>% 
-ggplot() + 
-  ggdist::stat_halfeye(aes(x = DV, y = month),
-                       fill = CLRS[3]) +
-  geom_vline(xintercept = 0 , linetype = "dashed",color = "grey")+
-  scale_x_continuous(name = xlabel) +
-  scale_y_discrete("Month") +
-  scale_color_manual("", 
-                     values = CLRS[(c(7,3))]) +
+GEPperYEAR %>% 
+  select(-.draw, -N) %>% 
+  pivot_wider(names_from = state, values_from = .value, values_fn = list) %>% 
+  unnest(everything()) %>% 
+  mutate(.value = 100*(1 - Desertified/Vegetated)) %>% 
+  group_by(location) %>% 
+  mean_hdci(.value)
+
+xlabel = "GEP~(kg~O[2]~m^{-2}~yr^{-1})"
+ggplot(GEPperYEAR %>% filter(location == "S")) + 
+  ggdist::stat_halfeye(aes(y = state, x = .value/1000), fill = CLRS[3]) +
+  scale_y_discrete("State") +
+  scale_x_continuous(name = parse(text = xlabel)) +
+  scale_color_manual("", values = CLRS[(c(7,3))]) +
   ggpubr::theme_pubr(base_size = FONTSIZE) +
   theme(legend.position = c(0,1),
         legend.justification = c(0,1),
@@ -497,59 +505,5 @@ ggplot() +
 
 wh = aseries(5);wh
 DPI = 300
-ggsave("Difference.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
-
-
-
-## GEP Percent decrease (only Sargassum)
-
-fitted_state = dset %>% select(state, location) %>% distinct()
-tmp = dset %>% ungroup() %>% 
-  group_by(month) %>% 
-  summarise(PPFD = mean(PPFD), TEMP = mean(TEMP))
-
-fitted_state = fitted_state %>% mutate(data = list(tmp))  %>% 
-  unnest(data) %>% 
-  add_fitted_draws(bout) %>% 
-  filter(location == "S") %>% 
-  ungroup() %>% 
-  select(-.row) %>% 
-  pivot_wider(names_from = state,
-              values_from = .value) %>% 
-  mutate(DV = 100*( 1 - Desertified / Vegetated)) 
-
-xlabel = "Percent decrease (%)"
-ggplot(fitted_state) + 
-  ggdist::stat_eye(aes(y = DV, x = month), fill = CLRS[3]) +
-  geom_hline(yintercept = 0 , linetype = "dashed",color = "grey")+
-  scale_month + 
-  scale_y_continuous(name = xlabel) +
-  scale_color_manual("",  values = CLRS[(c(7,3))]) +
-  ggpubr::theme_pubr(base_size = FONTSIZE) +
-  theme(legend.position = c(0,1),
-        legend.justification = c(0,1),
-        legend.direction = "horizontal",
-        legend.background = element_blank(),
-        legend.title = element_blank(),
-        strip.background = element_rect(fill = grey(0, 0.5), color = NA),
-        strip.text = element_text(size = 14, color = "white"))
-
-ggsave("Percent_decrease.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ggsave("Yearly_GEP.png", width = wh[2], height = wh[1], dpi = DPI, units = "mm")
 
