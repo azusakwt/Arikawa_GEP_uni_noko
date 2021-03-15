@@ -238,8 +238,8 @@ scale_month =
 
 ylabel = "GEP~(g~O[2]~m^{-2}~d^{-1})"
 plot_gep = ggplot() + 
-  geom_ribbon(aes(x = month, ymin = .lower, ymax = .upper, fill = state), data = predictions, alpha = 0.2,
-              position = position_dodge(DODGE)) +
+  # geom_ribbon(aes(x = month, ymin = .lower, ymax = .upper, fill = state), data = predictions, alpha = 0.2,
+  #             position = position_dodge(DODGE)) +
   geom_ribbon(aes(x = month, ymin = .lower, ymax = .upper, fill = state), data = fitted, alpha = 0.4,
               position = position_dodge(DODGE)) +
   geom_line(aes(x = month, y = .value, color = state), data = fitted,
@@ -312,6 +312,12 @@ deltaGEPplot = ggplot(dset_vd) +
 wh = aseries(5);wh
 DPI = 300
 ggsave("GEPVDvsMonth.png", width = wh[2], height = wh[1], plot = deltaGEPplot, dpi = DPI, units = "mm")
+
+plot_con = cowplot::plot_grid(plot_gep, deltaGEPplot, ncol = 1,
+                   align = "hv",
+                   rel_heights  = c(3,2))
+
+ggsave("GEPVDandGEP.png", width = wh[2], height = wh[1], plot = plot_con, dpi = DPI, units = "mm")
 
 # GEP vs temperature
 
